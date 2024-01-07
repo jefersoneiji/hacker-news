@@ -1,0 +1,14 @@
+{
+  "name": "server",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "jeferson eiji",
+  "license": "MIT",
+  "scripts": {
+    "dev" : "ts-node-dev --transpile-only src/index.ts"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.3.3"
+  }
+}
