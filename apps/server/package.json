@@ -5,10 +5,21 @@
   "author": "jeferson eiji",
   "license": "MIT",
   "scripts": {
-    "dev" : "ts-node-dev --transpile-only src/index.ts"
+    "dev": "ts-node-dev --transpile-only src/index.ts"
   },
   "devDependencies": {
+    "@types/koa": "^2.13.12",
+    "@types/koa__cors": "^5.0.0",
+    "@types/koa__router": "^12.0.4",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@koa/cors": "^5.0.0",
+    "@koa/router": "^12.0.1",
+    "graphql": "^16.8.1",
+    "koa": "^2.15.0",
+    "koa-graphql": "^0.12.0",
+    "nexus": "^1.3.0"
   }
 }
