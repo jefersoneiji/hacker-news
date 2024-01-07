@@ -2,20 +2,10 @@ import Koa from 'koa'
 import Router from '@koa/router'
 import { graphqlHTTP } from 'koa-graphql'
 import cors from '@koa/cors'
-import { GraphQLBoolean, GraphQLObjectType, GraphQLSchema } from 'graphql'
+import { schema } from './graphql/schema'
 
 const app = new Koa()
 const router = new Router()
-
-const schema = new GraphQLSchema({
-    query: new GraphQLObjectType({
-        name: 'Query',
-        description: 'query root',
-        fields: () => ({
-            ok: { type: GraphQLBoolean, resolve: () => true }
-        })
-    })
-})
 
 router.all('/graphql',
     graphqlHTTP({
