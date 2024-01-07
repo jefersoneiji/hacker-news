@@ -1,24 +1,19 @@
-import Koa from 'koa'
-import Router from '@koa/router'
-import { graphqlHTTP } from 'koa-graphql'
-import cors from '@koa/cors'
-import { schema } from './graphql/schema'
+import { app } from "./app"
+import { connectToDB } from "./database"
 
-const app = new Koa()
-const router = new Router()
+const bootstrap = async () => {
+    try {
+        await connectToDB()
 
-router.all('/graphql',
-    graphqlHTTP({
-        schema,
-        context: {},
-        graphiql: true
+    } catch (error) {
+        console.error('unable to connect to database!', error)
+        process.exit(1)
+    }
+
+    const PORT = 4000
+    app.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}/graphql`)
     })
-)
+}
 
-app
-    .use(cors({ origin: '*' }))
-    .use(router.routes())
-    .use(router.allowedMethods())
-
-const PORT = 4000
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}/graphql`))
+bootstrap()
