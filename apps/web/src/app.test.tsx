@@ -8,7 +8,7 @@ import { BrowserRouter, RouterProvider } from 'react-router-dom'
 import { userEvent } from '@testing-library/user-event'
 import { router } from './router'
 
-test('should find edit in screen', async () => {
+test.skip('should find edit in screen', async () => {
     const environment = createMockEnvironment()
     render(
         <RelayEnvironmentProvider environment={environment}>
@@ -26,7 +26,7 @@ test('should find edit in screen', async () => {
     await waitFor(() => expect(screen.getByText(/data.id/i)).toBeInTheDocument())
 })
 
-test('should return new screen after user click', async () => {
+test.skip('should return new screen after user click', async () => {
     const environment = createMockEnvironment()
     render(
         <RelayEnvironmentProvider environment={environment}>

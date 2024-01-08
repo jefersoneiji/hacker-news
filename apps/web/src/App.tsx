@@ -1,4 +1,3 @@
-import './App.css'
 import { graphql } from 'relay-runtime'
 import { useLazyLoadQuery } from 'react-relay'
 import { Link } from 'react-router-dom'
