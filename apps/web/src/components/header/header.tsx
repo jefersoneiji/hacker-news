@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { useShrink } from "../utils/useShrink"
+import { useShrink } from "../../utils/useShrink"
 import logo from './y18.svg'
 
 export const Header = () => {
