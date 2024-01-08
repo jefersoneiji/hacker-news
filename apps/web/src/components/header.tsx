@@ -24,8 +24,48 @@ export const Header = () => {
                     >
                         <span className='navbar-toggler-icon'></span>
                     </button>
+                    <div className='collapse navbar-collapse' id="navbarSupportedContent">
+                        <ul className='navbar-nav align-items-sm-start align-items-lg-center text-dark' style={{ padding: '2px' }}>
+                            <NavItem text='new' href='/news' />
+                            <VericalRuler />
+                            <NavItem text='past' href='/past' />
+                            <VericalRuler />
+                            <NavItem text='past' href='/past' />
+                            <VericalRuler />
+                            <NavItem text='comments' href='/comments' />
+                            <VericalRuler />
+                            <NavItem text='ask' href='/ask' />
+                            <VericalRuler />
+                            <NavItem text='show' href='/show' />
+                            <VericalRuler />
+                            <NavItem text='jobs' href='/jobs' />
+                            <VericalRuler />
+                            <NavItem text='submit' href='/submit' />
+                        </ul>
+                        <NavAuth />
+                    </div>
                 </div>
             </nav>
         </header>
+    )
+}
+
+const VericalRuler = () => <span className='d-none d-lg-block'>|</span>
+
+const NavItem = ({ text, href }: { text: string, href: string }) => {
+    return (
+        <li className='nav-item'>
+            <Link to={href} className='nav-link text-dark'>
+                {text}
+            </Link>
+        </li>
+    )
+}
+
+const NavAuth = () => {
+    return (
+        <div className='d-flex flex-lg-fill justify-content-lg-end' style={{ listStyle: 'none' }}>
+            <NavItem text='login' href='/login' />
+        </div>
     )
 }
