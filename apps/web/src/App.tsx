@@ -1,6 +1,7 @@
 import './App.css'
 import { graphql } from 'relay-runtime'
 import { useLazyLoadQuery } from 'react-relay'
+import { Link } from 'react-router-dom'
 
 import { AppQuery as AppQueryType } from './__generated__/AppQuery.graphql'
 
@@ -19,6 +20,7 @@ function App() {
     <>
       <p>data.id is: {data.ok.id}</p>
       <p>data.value is: {data.ok.value.toString()}</p>
+      <Link to="/about">Go to About</Link>
     </>
   )
 }
