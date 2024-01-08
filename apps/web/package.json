@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "relay": "relay-compiler --watch"
+    "relay": "relay-compiler --watch",
+    "test": "vitest"
   },
   "dependencies": {
     "graphql": "^16.8.1",
@@ -17,6 +18,8 @@
     "react-relay": "^16.1.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.2.0",
+    "@testing-library/react": "^14.1.2",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@types/react-relay": "^16.0.5",
@@ -28,9 +31,12 @@
     "eslint": "^8.55.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "jsdom": "^23.2.0",
     "relay-compiler": "^16.1.0",
+    "relay-test-utils": "^16.1.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
-    "vite-plugin-relay": "^2.0.0"
+    "vite-plugin-relay": "^2.0.0",
+    "vitest": "^1.1.3"
   }
 }
