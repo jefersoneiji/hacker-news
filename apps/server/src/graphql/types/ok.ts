@@ -1,5 +1,5 @@
 import { booleanArg, extendType, nonNull, objectType } from 'nexus'
-import { fromGlobalId, toGlobalId } from 'graphql-relay'
+import { toGlobalId } from 'graphql-relay'
 
 export const ok = objectType({
     name: 'ok',
@@ -7,7 +7,8 @@ export const ok = objectType({
     definition(t) {
         t.nonNull.id('id', {
             description: 'the id of an object',
-            resolve: (root: any , _args) => toGlobalId('ok', root.id)
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            resolve: (root: any) => toGlobalId('ok', root.id)
         })
         t.nonNull.boolean('value')
     },
@@ -19,7 +20,8 @@ export const okQuery = extendType({
         t.nonNull.field('ok', {
             type: 'ok',
             description: 'test query of ok type',
-            async resolve(_root:any, _args, ctx) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            async resolve(_root: any, _args, ctx) { 
                 const result = await ctx.ok.findOne()
                 return { id: result?._id.toString(), value: true }
             }
