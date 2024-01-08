@@ -1,28 +1,44 @@
 {
   "name": "web",
-  "version": "1.0.0",
   "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint . --max-warnings 0"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "relay": "relay-compiler --watch",
+    "test": "vitest"
   },
   "dependencies": {
-    "@repo/ui": "*",
-    "next": "^14.0.4",
+    "graphql": "^16.8.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-relay": "^16.1.0",
+    "react-router-dom": "^6.21.1"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^14.0.4",
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
-    "@types/eslint": "^8.56.1",
-    "@types/node": "^20.10.6",
-    "@types/react": "^18.2.46",
-    "@types/react-dom": "^18.2.18",
-    "eslint": "^8.56.0",
-    "typescript": "^5.3.3"
+    "@testing-library/jest-dom": "^6.2.0",
+    "@testing-library/react": "^14.1.2",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@types/react-relay": "^16.0.5",
+    "@types/relay-runtime": "^14.1.21",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "babel-plugin-relay": "^16.1.0",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "jsdom": "^23.2.0",
+    "relay-compiler": "^16.1.0",
+    "relay-test-utils": "^16.1.0",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8",
+    "vite-plugin-relay": "^2.0.0",
+    "vitest": "^1.1.3"
   }
 }
