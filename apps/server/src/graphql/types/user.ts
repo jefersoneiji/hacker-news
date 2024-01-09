@@ -1,5 +1,5 @@
 import { toGlobalId } from "graphql-relay";
-import { extendType, objectType } from "nexus";
+import { extendType, nonNull, objectType, stringArg } from "nexus";
 
 export const user = objectType({
     name: 'user',
@@ -26,6 +26,20 @@ export const userQuery = extendType({
                     throw new Error("user not found");
                 }
                 return res;
+            }
+        })
+    },
+})
+
+export const signup = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.nonNull.field('signup', {
+            type: 'user',
+            description: 'signs up a user',
+            args: { username: nonNull(stringArg()) },
+            resolve(_, args, ctx) {
+                return new ctx.user({ username: args.username }).save()
             }
         })
     },

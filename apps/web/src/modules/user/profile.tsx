@@ -4,6 +4,7 @@ import { Header } from "../../components/header/header"
 import { useShrink } from "../../utils/useShrink"
 import { graphql } from "relay-runtime"
 import { useLazyLoadQuery } from "react-relay"
+import { profileQuery as profileQueryType } from "./__generated__/profileQuery.graphql"
 
 const profileQuery = graphql`
     query profileQuery {
@@ -13,11 +14,11 @@ const profileQuery = graphql`
     }
 `
 export const Profile = () => {
-    useLazyLoadQuery(profileQuery, {})
+    const data = useLazyLoadQuery<profileQueryType>(profileQuery, {})
 
     const [searchParams] = useSearchParams()
     console.log('id is: ', searchParams.get('id'))
-    
+
     const [shrink] = useShrink()
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -28,7 +29,7 @@ export const Profile = () => {
             <div className="container-fluid px-1 py-3" style={{ backgroundColor: 'var(--spring-wood)' }}>
                 <form onSubmit={onSubmit}>
                     <Row text="user">
-                        <span>jefersoneiji</span>
+                        <span>{data.user.username}</span>
                     </Row>
                     <Row text="created">
                         <span>100 days ago</span>
