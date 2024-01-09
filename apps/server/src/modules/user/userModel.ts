@@ -2,8 +2,10 @@ import mongoose, { Schema, Document } from "mongoose";
 import { NexusGenObjects } from "../../../nexus-typegen";
 
 const userSchema = new Schema({
-    username: { type: String, required: true }
-})
+    username: { type: String, required: true },
+},
+    { timestamps: { createdAt: true, updatedAt: false } }
+)
 
 type userDocument = NexusGenObjects['user'] & Document
 

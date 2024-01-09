@@ -11,6 +11,7 @@ export const user = objectType({
             resolve: (root: any) => toGlobalId('user', root.id)
         })
         t.nonNull.string('username')
+        t.nonNull.dateTime('createdAt')
     },
 })
 
@@ -33,6 +34,18 @@ export const userQuery = extendType({
     },
 })
 
+export const users = extendType({
+    type: 'Query',
+    definition(t) {
+        t.nonNull.list.nonNull.field('users',{
+            type: 'user',
+            description: 'return an array of users',
+            resolve(_, _args, ctx){
+                return ctx.user.find()
+            }
+        })
+    },
+})
 export const signup = extendType({
     type: 'Mutation',
     definition(t) {
