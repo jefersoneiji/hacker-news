@@ -22,7 +22,7 @@ export const HomeRow = ({ post, idx }: { post: rowFragment$key, idx: number }) =
     const data = useFragment(homeRowFragment, post)
 
     const voted= data.votedByLoggedUser
-    const host = new URL(data.link).hostname
+    const link = new URL(data.link)
     return (
         <div className="d-flex flex-row py-1" style={{ fontSize: 14 }}>
             <div className="d-flex align-items-center align-self-start">
@@ -35,7 +35,7 @@ export const HomeRow = ({ post, idx }: { post: rowFragment$key, idx: number }) =
                     <Link to={data.link} className='text-dark text-decoration-none'>
                         {data.title}
                     </Link>
-                    <a href='/' className='link ms-2' style={{ fontSize: 13 }}>({host})</a>
+                    <a href='/' className='link ms-2' style={{ fontSize: 13 }}>({link.hostname})</a>
                 </div>
                 <div className='d-flex flex-row' style={{ fontSize: 12, color: 'var(--gray)' }}>
                     <span>50 points by <Link to='/' className='link'>jefersoneiji</Link></span>
