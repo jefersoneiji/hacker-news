@@ -12,6 +12,7 @@ export const post = objectType({
         })
         t.nonNull.string('title')
         t.nonNull.dateTime('createdAt')
+        t.nonNull.string('link')
     },
 })
 
@@ -21,9 +22,9 @@ export const createPost = extendType({
         t.nonNull.field('post', {
             type: 'post',
             description: 'creates a user post',
-            args: { title: nonNull(stringArg()) },
+            args: { title: nonNull(stringArg()), link: nonNull(stringArg()) },
             resolve(_, args, ctx) {
-                return new ctx.post({ title: args.title }).save()
+                return new ctx.post({ title: args.title, link: args.link }).save()
             }
         })
     },

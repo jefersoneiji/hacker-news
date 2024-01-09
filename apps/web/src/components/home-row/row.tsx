@@ -14,12 +14,14 @@ const homeRowFragment = graphql`
         title
         id
         createdAt
+        link
     }
 `
 export const HomeRow = ({ post, idx }: { post: rowFragment$key, idx: number }) => {
     const data = useFragment(homeRowFragment, post)
 
     const voted: boolean = false
+    const host = new URL(data.link).hostname
     return (
         <div className="d-flex flex-row py-1" style={{ fontSize: 14 }}>
             <div className="d-flex align-items-center align-self-start">
@@ -29,10 +31,10 @@ export const HomeRow = ({ post, idx }: { post: rowFragment$key, idx: number }) =
             </div>
             <div className="d-flex flex-column">
                 <div className='d-flex flex-row align-items-end'>
-                    <Link to='/' className='text-dark text-decoration-none'>
+                    <Link to={data.link} className='text-dark text-decoration-none'>
                         {data.title}
                     </Link>
-                    <a href='/' className='link ms-2' style={{ fontSize: 13 }}>(blog.haschek.at)</a>
+                    <a href='/' className='link ms-2' style={{ fontSize: 13 }}>({host})</a>
                 </div>
                 <div className='d-flex flex-row' style={{ fontSize: 12, color: 'var(--gray)' }}>
                     <span>50 points by <Link to='/' className='link'>jefersoneiji</Link></span>
