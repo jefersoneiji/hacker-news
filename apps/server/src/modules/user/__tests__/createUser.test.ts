@@ -9,6 +9,7 @@ test('should return created user', async () => {
             username
             createdAt
             email
+            karma
         }
     }
     `
@@ -18,4 +19,5 @@ test('should return created user', async () => {
     expect(result.signup.username).toEqual(args.username)
     expect(result.signup.createdAt).not.toBeNull()
     expect(result.signup.email).toBeTypeOf('string')
+    expect(result.signup.karma).toEqual(0)
 })
