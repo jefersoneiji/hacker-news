@@ -14,6 +14,7 @@ export const user = objectType({
         t.nonNull.dateTime('createdAt')
         t.string('email')
         t.string('about')
+        t.nonNull.int('karma')
     },
 })
 

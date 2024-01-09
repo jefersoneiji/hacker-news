@@ -17,6 +17,7 @@ const profileQuery = graphql`
             createdAt
             email
             about
+            karma
         }
     }
 `
@@ -41,12 +42,13 @@ export const Profile = () => {
                         <span>{dayjs(data.user.createdAt).fromNow()}</span>
                     </Row>
                     <Row text="karma">
-                        <span style={{ color: 'var(--gray)' }}>1</span>
+                        <span style={{ color: 'var(--gray)' }}>{data.user.karma}</span>
                     </Row>
                     <Row text="about">
                         <textarea
                             value={data.user.about || ''}
                             onChange={() => undefined}
+                            style={{fontSize: 13}}
                         />
                     </Row>
                     <div className="row">
