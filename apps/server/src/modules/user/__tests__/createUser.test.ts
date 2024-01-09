@@ -7,6 +7,7 @@ test('should return created user', async () => {
     mutation createUser($username: String!){
         signup(username: $username){
             username
+            createdAt
         }
     }
     `
@@ -14,4 +15,5 @@ test('should return created user', async () => {
     const result = await request<NexusGenFieldTypes['Mutation']>('http://localhost:4000/graphql', mutation, args)
 
     expect(result.signup.username).toEqual(args.username)
+    expect(result.signup.createdAt).not.toBeNull()
 })

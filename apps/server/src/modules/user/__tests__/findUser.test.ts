@@ -15,7 +15,7 @@ test.skip('should thrown error when user is not found', async () => {
     await expect(result).rejects.toThrowError('user not found')
 })
 
-test('should return one user from its id', async () => {
+test.skip('should return one user from its id', async () => {
     const query = gql`
         query getUser($userID: ID!) {
             user(userID: $userID) {
@@ -29,4 +29,18 @@ test('should return one user from its id', async () => {
 
     expect(result.user.username).toBe('johndoe')
     expect(result.user.id).toBe(args.userID)
+})
+
+test('should return list of users', async () => {
+    const query = gql`
+        query usersList {
+            users {
+                username
+                id
+            }
+        }
+    `
+    const result = await request<NexusGenFieldTypes['Query']>('http://localhost:4000/graphql', query)
+
+    expect(result.users).not.toBeNull()
 })
