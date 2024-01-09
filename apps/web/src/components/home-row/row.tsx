@@ -15,12 +15,13 @@ const homeRowFragment = graphql`
         id
         createdAt
         link
+        votedByLoggedUser
     }
 `
 export const HomeRow = ({ post, idx }: { post: rowFragment$key, idx: number }) => {
     const data = useFragment(homeRowFragment, post)
 
-    const voted: boolean = false
+    const voted= data.votedByLoggedUser
     const host = new URL(data.link).hostname
     return (
         <div className="d-flex flex-row py-1" style={{ fontSize: 14 }}>

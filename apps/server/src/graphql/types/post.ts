@@ -13,6 +13,7 @@ export const post = objectType({
         t.nonNull.string('title')
         t.nonNull.dateTime('createdAt')
         t.nonNull.string('link')
+        t.nonNull.boolean('votedByLoggedUser')
     },
 })
 
