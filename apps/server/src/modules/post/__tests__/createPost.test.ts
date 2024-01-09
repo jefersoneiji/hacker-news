@@ -10,6 +10,7 @@ test('should create a post', async () => {
                 title
                 link
                 createdAt
+                votedByLoggedUser
             }
         }
         `
@@ -24,4 +25,5 @@ test('should create a post', async () => {
     expect(result.post.link).toBe(args.link)
     expect(result.post.createdAt).not.toBeNull()
     expect(result.post.id).not.toBeNull()
+    expect(result.post.votedByLoggedUser).toBeFalsy()
 })
