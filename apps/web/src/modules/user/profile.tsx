@@ -15,6 +15,7 @@ const profileQuery = graphql`
         user(userID: $userID) {
             username
             createdAt
+            email
         }
     }
 `
@@ -56,7 +57,7 @@ export const Profile = () => {
                     <Row text="e-mail">
                         <input
                             type='email'
-                            value={'jeferson.eiji@icloud.com'}
+                            value={data.user.email||''}
                             autoCapitalize="off"
                             autoCorrect="off"
                             size={60}

@@ -12,6 +12,7 @@ export const user = objectType({
         })
         t.nonNull.string('username')
         t.nonNull.dateTime('createdAt')
+        t.string('email')
     },
 })
 
@@ -52,9 +53,9 @@ export const signup = extendType({
         t.nonNull.field('signup', {
             type: 'user',
             description: 'signs up a user',
-            args: { username: nonNull(stringArg()) },
+            args: { username: nonNull(stringArg()), email: stringArg() },
             resolve(_, args, ctx) {
-                return new ctx.user({ username: args.username }).save()
+                return new ctx.user({ username: args.username, email: args.email }).save()
             }
         })
     },
