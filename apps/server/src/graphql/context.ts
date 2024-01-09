@@ -1,12 +1,12 @@
-import { okModel } from "../modules/ok/okModel";
 import { postModel } from "../modules/post/postModel";
+import { userModel } from "../modules/user/userModel";
 
 export interface Context {
-    ok: typeof okModel
     post: typeof postModel
+    user: typeof userModel
 }
 
 export const context: Context = ({
-    ok: okModel,
-    post: postModel
+    post: postModel,
+    user: userModel
 })
