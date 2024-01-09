@@ -4,6 +4,7 @@ import { NexusGenObjects } from "../../../nexus-typegen";
 const userSchema = new Schema({
     username: { type: String, required: true },
     email: String,
+    about: String
 },
     { timestamps: { createdAt: true, updatedAt: false } }
 )

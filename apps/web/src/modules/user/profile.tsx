@@ -16,13 +16,14 @@ const profileQuery = graphql`
             username
             createdAt
             email
+            about
         }
     }
 `
 export const Profile = () => {
     const [searchParams] = useSearchParams()
     const userID = searchParams.get('id')
-    const data = useLazyLoadQuery<profileQueryType>(profileQuery, {userID})
+    const data = useLazyLoadQuery<profileQueryType>(profileQuery, { userID })
 
     const [shrink] = useShrink()
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -43,7 +44,10 @@ export const Profile = () => {
                         <span style={{ color: 'var(--gray)' }}>1</span>
                     </Row>
                     <Row text="about">
-                        <textarea />
+                        <textarea
+                            value={data.user.about || ''}
+                            onChange={() => undefined}
+                        />
                     </Row>
                     <div className="row">
                         <div className="col-1" />
@@ -57,7 +61,7 @@ export const Profile = () => {
                     <Row text="e-mail">
                         <input
                             type='email'
-                            value={data.user.email||''}
+                            value={data.user.email || ''}
                             autoCapitalize="off"
                             autoCorrect="off"
                             size={60}

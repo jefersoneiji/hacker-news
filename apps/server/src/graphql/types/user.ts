@@ -13,6 +13,7 @@ export const user = objectType({
         t.nonNull.string('username')
         t.nonNull.dateTime('createdAt')
         t.string('email')
+        t.string('about')
     },
 })
 
