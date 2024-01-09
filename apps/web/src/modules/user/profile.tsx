@@ -7,17 +7,16 @@ import { useLazyLoadQuery } from "react-relay"
 import { profileQuery as profileQueryType } from "./__generated__/profileQuery.graphql"
 
 const profileQuery = graphql`
-    query profileQuery {
-        user {
+    query profileQuery($userID: String!) {
+        user(userID: $userID) {
             username
         }
     }
 `
 export const Profile = () => {
-    const data = useLazyLoadQuery<profileQueryType>(profileQuery, {})
-
     const [searchParams] = useSearchParams()
-    console.log('id is: ', searchParams.get('id'))
+    const userID = searchParams.get('id')
+    const data = useLazyLoadQuery<profileQueryType>(profileQuery, {userID})
 
     const [shrink] = useShrink()
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {

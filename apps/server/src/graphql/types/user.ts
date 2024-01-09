@@ -1,5 +1,5 @@
-import { toGlobalId } from "graphql-relay";
-import { extendType, nonNull, objectType, stringArg } from "nexus";
+import { fromGlobalId, toGlobalId } from "graphql-relay";
+import { extendType, idArg, nonNull, objectType, stringArg } from "nexus";
 
 export const user = objectType({
     name: 'user',
@@ -20,8 +20,10 @@ export const userQuery = extendType({
         t.nonNull.field('user', {
             type: 'user',
             description: 'returns one user',
-            async resolve(_, _args, ctx) {
-                const res = await ctx.user.findOne();
+            args: { userID: nonNull(idArg()) },
+            async resolve(_, args, ctx) {
+                const id = fromGlobalId(args.userID).id
+                const res = await ctx.user.findOne({ _id: id });
                 if (!res) {
                     throw new Error("user not found");
                 }
