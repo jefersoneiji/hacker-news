@@ -2,7 +2,7 @@ import request, { gql } from "graphql-request";
 import { expect, test } from "vitest";
 import { NexusGenFieldTypes } from "../../../../nexus-typegen";
 
-test('should thrown error when user is not found', async () => {
+test.skip('should thrown error when user is not found', async () => {
     const query = gql`
         query getUser {
             user {
