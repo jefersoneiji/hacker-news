@@ -7,7 +7,7 @@ import { useLazyLoadQuery } from "react-relay"
 import { profileQuery as profileQueryType } from "./__generated__/profileQuery.graphql"
 
 const profileQuery = graphql`
-    query profileQuery($userID: String!) {
+    query profileQuery($userID: ID!) {
         user(userID: $userID) {
             username
         }
