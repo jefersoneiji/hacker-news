@@ -26,6 +26,7 @@
     "@koa/router": "^12.0.1",
     "graphql": "^16.8.1",
     "graphql-relay": "^0.10.0",
+    "graphql-scalars": "^1.22.4",
     "koa": "^2.15.0",
     "koa-graphql": "^0.12.0",
     "mongoose": "^8.0.3",

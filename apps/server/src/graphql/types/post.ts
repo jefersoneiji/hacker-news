@@ -11,6 +11,7 @@ export const post = objectType({
             resolve: (root: any) => toGlobalId('post', root.id)
         })
         t.nonNull.string('title')
+        t.nonNull.dateTime('createdAt')
     },
 })
 

@@ -1,6 +1,9 @@
 import { graphql } from 'relay-runtime'
 import { Link } from 'react-router-dom'
 import { useFragment } from 'react-relay'
+import dayjs, { extend } from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+extend(relativeTime)
 
 import triangle from './triangle.svg'
 import './home-row.css'
@@ -10,6 +13,7 @@ const homeRowFragment = graphql`
     fragment rowFragment on post {
         title
         id
+        createdAt
     }
 `
 export const HomeRow = ({ post, idx }: { post: rowFragment$key, idx: number }) => {
@@ -32,7 +36,7 @@ export const HomeRow = ({ post, idx }: { post: rowFragment$key, idx: number }) =
                 </div>
                 <div className='d-flex flex-row' style={{ fontSize: 12, color: 'var(--gray)' }}>
                     <span>50 points by <Link to='/' className='link'>jefersoneiji</Link></span>
-                    <Link to='/' className='link ms-1'>2 hours ago</Link>
+                    <Link to='/' className='link ms-1'>{dayjs(data.createdAt).fromNow()}</Link>
                     <Link to='/' className='link ms-1'>| hide |</Link>
                     <Link to='/' className='link ms-1'>54 comments</Link>
                 </div>

@@ -2,8 +2,11 @@ import mongoose, { Schema } from "mongoose";
 import { NexusGenObjects } from "../../../nexus-typegen";
 
 const postSchema = new Schema({
-    title: String
-})
+    title: { type: String, required: true }
+},
+    {
+        timestamps: { createdAt: true, updatedAt: false }
+    })
 
 type postDocument = NexusGenObjects['post'] & Document
 
