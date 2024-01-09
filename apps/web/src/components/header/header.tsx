@@ -30,8 +30,6 @@ export const Header = () => {
                             <VericalRuler />
                             <NavItem text='past' href='/past' />
                             <VericalRuler />
-                            <NavItem text='past' href='/past' />
-                            <VericalRuler />
                             <NavItem text='comments' href='/comments' />
                             <VericalRuler />
                             <NavItem text='ask' href='/ask' />
