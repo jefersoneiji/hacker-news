@@ -1,5 +1,5 @@
-import { toGlobalId } from "graphql-relay";
-import { extendType, nonNull, objectType, stringArg } from "nexus";
+import { fromGlobalId, toGlobalId } from "graphql-relay";
+import { extendType, idArg, nonNull, objectType, stringArg } from "nexus";
 
 export const post = objectType({
     name: 'post',
@@ -39,6 +39,25 @@ export const queryPosts = extendType({
             description: 'returns several posts',
             resolve(_, _args, ctx) {
                 return ctx.post.find()
+            }
+        })
+    },
+})
+
+export const onePost = extendType({
+    type: 'Query',
+    definition(t) {
+        t.nonNull.field('findPost', {
+            type: 'post',
+            description: 'returns one specific post by its id',
+            args: { postID: nonNull(idArg()) },
+            async resolve(_, args, ctx) {
+                const id = fromGlobalId(args.postID).id
+                const post = await ctx.post.findOne({ _id: id })
+                if (!post) {
+                    throw new Error("post not found");
+                }
+                return post
             }
         })
     },
