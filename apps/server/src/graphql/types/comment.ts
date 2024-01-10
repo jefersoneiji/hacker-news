@@ -14,6 +14,7 @@ export const comment = objectType({
             description: 'id of origin post'
         })
         t.nonNull.string('comment')
+        t.nonNull.dateTime('createdAt')
     },
 })
 
