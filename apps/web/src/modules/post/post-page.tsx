@@ -12,6 +12,7 @@ const postPageQuery = graphql`
     query postPageQuery($postID: ID!){
         findPost(postID: $postID){
             ...displayFragment
+            ...commentFragment
         }
     }
 `
@@ -19,7 +20,7 @@ const postPageQuery = graphql`
 export const PostPage = () => {
     const [shrink] = useShrink()
 
-    const data = useLazyLoadQuery<postPageQueryType>(postPageQuery, { postID: "359c72a4f8034d7b6e5a8d1c" })
+    const data = useLazyLoadQuery<postPageQueryType>(postPageQuery, { postID: "cG9zdDozNTljNzJhNGY4MDM0ZDdiNmU1YThkMWM=" })
 
     const onSubmit = (e: FormEvent<HTMLElement>) => {
         e.preventDefault()
@@ -28,14 +29,14 @@ export const PostPage = () => {
         <div className="mx-auto" style={{ width: shrink ? '85%' : '' }}>
             <Header />
             <div className="container-fluid px-2 pt-2" style={{ backgroundColor: 'var(--spring-wood)' }}>
-                <PostDisplay post={data.findPost}/>
+                <PostDisplay post={data.findPost} />
                 <form onSubmit={onSubmit}>
                     <textarea rows={8} cols={80} wrap="virtual" className="mt-3" />
-                    <div className="mt-3">
+                    <div className="mt-3 pb-3">
                         <input type='submit' value='add comment' />
                     </div>
                 </form>
-                <Comment/>
+                <Comment post={data.findPost} />
             </div>
         </div>
     )

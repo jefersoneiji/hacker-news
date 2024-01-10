@@ -4,13 +4,36 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 extend(relativeTime)
 
 import triangle from '../../components/home-row/triangle.svg'
+import { graphql } from "relay-runtime"
+import { useFragment } from "react-relay"
+import { commentFragment$key } from "./__generated__/commentFragment.graphql"
 
-export const Comment = () => {
-    const voted = false
-    const data = { link: 'https://localhost:4000', title: 'OpenBSD Cinnamon', createdAt: new Date() }
+const commentFragment = graphql`
+    fragment commentFragment on post {
+        comments {
+            comment
+        }
+    }
+`
+export const Comment = ({ post }: { post: commentFragment$key }) => {
+    const data = useFragment(commentFragment, post)
 
     return (
-        <div className="d-flex flex-row py-1" style={{ fontSize: 14 }}>
+        <>
+            {data.comments.map((elem, idx) =>
+                <Row
+                    key={idx}
+                    comment={elem.comment} />
+            )}
+        </>
+    )
+}
+
+const Row = ({ comment }: { comment: string }) => {
+    const voted = false
+    const data = { link: 'https://localhost:4000', title: 'OpenBSD Cinnamon', createdAt: new Date() }
+    return (
+        <div className="d-flex flex-row py-2 mt-1" style={{ fontSize: 14 }}>
             <div className="d-flex align-items-center align-self-start" style={{ color: 'var(--gray)' }}>
                 {!voted &&
                     <img
@@ -30,9 +53,9 @@ export const Comment = () => {
 
                     <Link to='/' className='link ms-1'>| next [–]</Link>
                 </div>
-                <Link to={data.link} className='text-dark text-decoration-none mt-1'>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis scelerisque viverra quam, eu congue felis iaculis nec. Etiam nec metus mi. Sed massa urna, lacinia vitae sollicitudin ut, imperdiet sed mauris. Pellentesque fermentum placerat volutpat. Aliquam tempus posuere lacus, ultrices bibendum est egestas vel. Proin nisi nunc, dignissim at purus id, fermentum tempus enim. Nunc nec quam at lorem feugiat semper feugiat eu lorem. Donec dignissim bibendum arcu et dignissim. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                </Link>
+                <p className='text-dark text-decoration-none mt-1 my-0'>
+                    {comment}
+                </p>
             </div>
         </div >
     )

@@ -1,4 +1,4 @@
-import { toGlobalId } from "graphql-relay";
+import { fromGlobalId, toGlobalId } from "graphql-relay";
 import { extendType, idArg, nonNull, objectType, stringArg } from "nexus";
 
 export const comment = objectType({
@@ -13,6 +13,7 @@ export const comment = objectType({
         t.nonNull.id('postId', {
             description: 'id of origin post'
         })
+        t.nonNull.string('comment')
     },
 })
 
@@ -22,9 +23,10 @@ export const commentPost = extendType({
         t.nonNull.field('comment', {
             type: 'comment',
             description: 'comments a post',
-            args: { postId: nonNull(idArg()) },
+            args: { postId: nonNull(idArg()), comment: nonNull(stringArg()) },
             resolve(_, args, ctx) {
-                return new ctx.comment({ postId: args.postId }).save()
+                const id = fromGlobalId(args.postId).id
+                return new ctx.comment({ postId: id, comment: args.comment }).save()
             }
         })
     },
