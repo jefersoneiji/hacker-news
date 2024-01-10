@@ -15,6 +15,7 @@ export const user = objectType({
         t.string('email')
         t.string('about')
         t.nonNull.int('karma')
+        t.nonNull.string('password')
     },
 })
 
@@ -40,10 +41,10 @@ export const userQuery = extendType({
 export const users = extendType({
     type: 'Query',
     definition(t) {
-        t.nonNull.list.nonNull.field('users',{
+        t.nonNull.list.nonNull.field('users', {
             type: 'user',
             description: 'return an array of users',
-            resolve(_, _args, ctx){
+            resolve(_, _args, ctx) {
                 return ctx.user.find()
             }
         })
@@ -55,9 +56,35 @@ export const signup = extendType({
         t.nonNull.field('signup', {
             type: 'user',
             description: 'signs up a user',
-            args: { username: nonNull(stringArg()), email: stringArg() },
+            args: {
+                username: nonNull(stringArg()),
+                email: stringArg(),
+                password: nonNull(stringArg())
+            },
             resolve(_, args, ctx) {
-                return new ctx.user({ username: args.username, email: args.email }).save()
+                return new ctx.user({
+                    username: args.username,
+                    email: args.email,
+                    password: args.password
+                }).save()
+            }
+        })
+    },
+})
+
+export const login = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.nonNull.field('login', {
+            type: 'user',
+            description: 'logs in an user',
+            args: { username: nonNull(stringArg()), password: nonNull(stringArg()) },
+            async resolve(_, args, ctx) {
+                const user = await ctx.user.findOne({ username: args.username })
+                if (user?.password !== args.password) {
+                    throw new Error("invalid credentials. try again");
+                }
+                return user
             }
         })
     },
