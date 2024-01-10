@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom"
-import dayjs from 'dayjs'
+import dayjs, { extend } from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+extend(relativeTime)
 
 import triangle from '../../components/home-row/triangle.svg'
 import { graphql } from "relay-runtime"
@@ -18,7 +20,7 @@ export const PostDisplay = ({ post }: { post: displayFragment$key }) => {
     const data = useFragment(postDisplayFragment, post)
     const link = new URL(data.link)
     const voted = data.votedByLoggedUser
-    
+
     return (
         <div className="d-flex flex-row py-1" style={{ fontSize: 14 }}>
             <div className="d-flex align-items-center align-self-start">
