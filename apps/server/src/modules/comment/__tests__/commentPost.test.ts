@@ -7,6 +7,7 @@ test('should comment a post', async () => {
         mutation commentPost($postId: ID!, $comment: String!){
             comment(postId: $postId, comment: $comment){
                 comment
+                createdAt
             }
         }
     `
@@ -19,4 +20,5 @@ test('should comment a post', async () => {
     const result = await request<{comment: NexusGenFieldTypes['comment']}>('http://localhost:4000/graphql', mutation, args)
 
     expect(result.comment.comment).toEqual(args.comment)
+    expect(result.comment.createdAt).not.toBeNull()
 })
