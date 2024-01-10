@@ -12,16 +12,20 @@ import { rowFragment$key } from './__generated__/rowFragment.graphql'
 const homeRowFragment = graphql`
     fragment rowFragment on post {
         title
-        id
         createdAt
         link
         votedByLoggedUser
     }
 `
-export const HomeRow = ({ post, idx }: { post: rowFragment$key, idx: number }) => {
+type TRow = {
+    post: rowFragment$key,
+    idx: number
+}
+
+export const HomeRow = ({ post, idx }: TRow) => {
     const data = useFragment(homeRowFragment, post)
 
-    const voted= data.votedByLoggedUser
+    const voted = data.votedByLoggedUser
     const link = new URL(data.link)
     return (
         <div className="d-flex flex-row py-1" style={{ fontSize: 14 }}>
