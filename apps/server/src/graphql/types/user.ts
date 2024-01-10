@@ -71,3 +71,21 @@ export const signup = extendType({
         })
     },
 })
+
+export const login = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.nonNull.field('login', {
+            type: 'user',
+            description: 'logs in an user',
+            args: { username: nonNull(stringArg()), password: nonNull(stringArg()) },
+            async resolve(_, args, ctx) {
+                const user = await ctx.user.findOne({ username: args.username })
+                if (user?.password !== args.password) {
+                    throw new Error("invalid credentials. try again");
+                }
+                return user
+            }
+        })
+    },
+})
