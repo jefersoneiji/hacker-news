@@ -6,6 +6,7 @@ import { Header } from "../../components/header/header"
 import { useShrink } from "../../utils/useShrink"
 import type { postPageQuery as postPageQueryType } from "./__generated__/postPageQuery.graphql"
 import { PostDisplay } from "./display"
+import { Comment } from "./comment"
 
 const postPageQuery = graphql`
     query postPageQuery($postID: ID!){
@@ -34,6 +35,7 @@ export const PostPage = () => {
                         <input type='submit' value='add comment' />
                     </div>
                 </form>
+                <Comment/>
             </div>
         </div>
     )

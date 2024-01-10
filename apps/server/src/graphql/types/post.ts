@@ -14,6 +14,14 @@ export const post = objectType({
         t.nonNull.dateTime('createdAt')
         t.nonNull.string('link')
         t.nonNull.boolean('votedByLoggedUser')
+        t.nonNull.list.nonNull.field('comments', {
+            type: 'comment',
+            description: 'list of comments for a post',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            resolve(root: any, _args, ctx) {
+                return ctx.comment.find({ postId: root.id })
+            }
+        })
     },
 })
 
@@ -49,7 +57,7 @@ export const onePost = extendType({
     definition(t) {
         t.nonNull.field('findPost', {
             type: 'post',
-            description: 'returns one specific post by its id',
+            description: 'returns one specific post by its global id',
             args: { postID: nonNull(idArg()) },
             async resolve(_, args, ctx) {
                 const id = fromGlobalId(args.postID).id
