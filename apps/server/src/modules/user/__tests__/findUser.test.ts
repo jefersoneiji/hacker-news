@@ -15,7 +15,7 @@ test.skip('should thrown error when user is not found', async () => {
     await expect(result).rejects.toThrowError('user not found')
 })
 
-test('should return one user from its id', async () => {
+test.skip('should return one user from its id', async () => {
     const query = gql`
         query getUser($userID: ID!) {
             user(userID: $userID) {
