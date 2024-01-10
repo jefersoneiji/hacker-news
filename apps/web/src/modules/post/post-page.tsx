@@ -1,6 +1,6 @@
 import { graphql } from "relay-runtime"
-import { useLazyLoadQuery } from "react-relay"
-import { FormEvent } from "react"
+import { useLazyLoadQuery, useMutation } from "react-relay"
+import { FormEvent, useState } from "react"
 
 import { Header } from "../../components/header/header"
 import { useShrink } from "../../utils/useShrink"
@@ -16,14 +16,35 @@ const postPageQuery = graphql`
         }
     }
 `
+const postPageMutation = graphql`
+    mutation postPageMutation($postId: ID!, $comment: String!){
+        comment(postId: $postId, comment: $comment){
+            comment
+        }
+    }
+`
 
 export const PostPage = () => {
     const [shrink] = useShrink()
 
-    const data = useLazyLoadQuery<postPageQueryType>(postPageQuery, { postID: "cG9zdDozNTljNzJhNGY4MDM0ZDdiNmU1YThkMWM=" })
+    const args = { postID: "cG9zdDozNTljNzJhNGY4MDM0ZDdiNmU1YThkMWM=" }
+    const data = useLazyLoadQuery<postPageQueryType>(postPageQuery, args)
+    const [commitMutation] = useMutation(postPageMutation)
+    const [comment, setComment] = useState('')
 
     const onSubmit = (e: FormEvent<HTMLElement>) => {
         e.preventDefault()
+
+        commitMutation({
+            variables: {
+                postId: args.postID,
+                comment
+            },
+            onCompleted() {
+                console.log('comment posted')
+                setComment('')
+            }
+        })
     }
     return (
         <div className="mx-auto" style={{ width: shrink ? '85%' : '' }}>
@@ -31,7 +52,14 @@ export const PostPage = () => {
             <div className="container-fluid px-2 pt-2" style={{ backgroundColor: 'var(--spring-wood)' }}>
                 <PostDisplay post={data.findPost} />
                 <form onSubmit={onSubmit}>
-                    <textarea rows={8} cols={80} wrap="virtual" className="mt-3" />
+                    <textarea
+                        rows={8}
+                        cols={80}
+                        wrap="virtual"
+                        className="mt-3"
+                        value={comment}
+                        onChange={e => setComment(e.target.value)}
+                    />
                     <div className="mt-3 pb-3">
                         <input type='submit' value='add comment' />
                     </div>
