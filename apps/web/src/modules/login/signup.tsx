@@ -1,14 +1,38 @@
 import { useNavigate } from "react-router-dom"
 import { Row } from "./auth"
-import { FormEvent } from "react"
+import { FormEvent, useState } from "react"
+import { graphql } from "relay-runtime"
+import { useMutation } from "react-relay"
 
+const singupMutation = graphql`
+    mutation signupMutation($username: String!, $password: String!){
+        signup(username: $username, password: $password){
+            username
+        }
+    }
+`
 export const Signup = () => {
     const navigate = useNavigate()
-    
+
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+
+    const [commitMutation] = useMutation(singupMutation)
+
     const onSubmitSignin = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log('login onSubmit triggered')
-        navigate('/')
+
+        commitMutation({
+            variables: {
+                username,
+                password
+            },
+            onCompleted() {
+                setUsername('')
+                setPassword('')
+                navigate('/')
+            }
+        })
     }
     return (
         <>
@@ -20,9 +44,9 @@ export const Signup = () => {
                         autoCorrect="off"
                         spellCheck={false}
                         autoCapitalize="off"
-                        value={""}
+                        value={username}
                         size={20}
-                        onChange={() => undefined}
+                        onChange={(e) => setUsername(e.target.value)}
                         style={{ fontSize: 13 }}
                     />
                 </Row>
@@ -30,9 +54,9 @@ export const Signup = () => {
                     <input
                         type='password'
                         autoComplete="off"
-                        value={""}
+                        value={password}
                         size={20}
-                        onChange={() => undefined}
+                        onChange={(e) => setPassword(e.target.value)}
                         style={{ fontSize: 13 }}
                     />
                 </Row>

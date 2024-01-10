@@ -1,6 +1,6 @@
 import { FormEvent, ReactNode } from "react"
 import { Link, useNavigate } from "react-router-dom"
-
+import { Signup } from "./signup"
 
 export const Auth = () => {
     const navigate = useNavigate()
@@ -48,6 +48,7 @@ export const Auth = () => {
             <div className="mt-2">
                 <Link to='/'>Forgot your password?</Link>
             </div>
+            <Signup />
         </div>
     )
 }
