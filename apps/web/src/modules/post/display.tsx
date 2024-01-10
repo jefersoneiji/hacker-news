@@ -2,11 +2,23 @@ import { Link } from "react-router-dom"
 import dayjs from 'dayjs'
 
 import triangle from '../../components/home-row/triangle.svg'
+import { graphql } from "relay-runtime"
+import { useFragment } from "react-relay"
+import { displayFragment$key } from "./__generated__/displayFragment.graphql"
 
-export const PostDisplay = () => {
-    const voted = false
-    const data = { link: 'https://localhost', title: 'How to becom the sudoku master', createdAt: new Date() }
-    const link = { hostname: 'localhost' }
+const postDisplayFragment = graphql`
+fragment displayFragment on post {
+    link
+    title
+    createdAt
+    votedByLoggedUser
+}
+`
+export const PostDisplay = ({ post }: { post: displayFragment$key }) => {
+    const data = useFragment(postDisplayFragment, post)
+    const link = new URL(data.link)
+    const voted = data.votedByLoggedUser
+    
     return (
         <div className="d-flex flex-row py-1" style={{ fontSize: 14 }}>
             <div className="d-flex align-items-center align-self-start">
