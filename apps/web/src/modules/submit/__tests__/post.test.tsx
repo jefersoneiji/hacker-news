@@ -29,6 +29,7 @@ test('should navigate to home pagefter a submit is done by use', async () => {
 
     await user.click(screen.getByRole('button'))
     act(() =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         environment.mock.resolveMostRecentOperation((operation: any) =>
             MockPayloadGenerator.generate(operation)
         )

@@ -44,7 +44,6 @@ export const Post = () => {
                 <form onSubmit={onSubmit}>
                     <Row text="title">
                         <input
-                            data-testid="title"
                             type='text'
                             value={title}
                             autoCapitalize="off"
@@ -56,7 +55,6 @@ export const Post = () => {
                     </Row>
                     <Row text="url">
                         <input
-                            data-testid="url"
                             id="url"
                             type='url'
                             value={link}
@@ -80,13 +78,12 @@ export const Post = () => {
                     <div className="row">
                         <div className="col-1" />
                         <div className="col">
-                            <button
+                            <input
                                 type='submit'
+                                value="submit"
                                 className="my-2"
                                 style={{ fontSize: 13 }}
-                            >
-                                submit
-                            </button>
+                            />
                         </div>
                     </div>
                 </form>
