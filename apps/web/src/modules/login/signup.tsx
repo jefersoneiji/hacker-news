@@ -1,27 +1,25 @@
-import { FormEvent, ReactNode } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import { Row } from "./auth"
+import { FormEvent } from "react"
 
-
-export const Auth = () => {
+export const Signup = () => {
     const navigate = useNavigate()
-
-    const onSubmitLogin = (e: FormEvent<HTMLFormElement>) => {
+    
+    const onSubmitSignin = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         console.log('login onSubmit triggered')
         navigate('/')
     }
-
     return (
-        <div className="container-fluid">
-            <b>Login</b>
-            <form onSubmit={onSubmitLogin}>
-                <Row text="username: ">
+        <>
+            <div className="mt-3"><b>Create Account</b></div>
+            <form onSubmit={onSubmitSignin}>
+                <Row text="username:">
                     <input
                         type='text'
                         autoCorrect="off"
                         spellCheck={false}
                         autoCapitalize="off"
-                        autoFocus={true}
                         value={""}
                         size={20}
                         onChange={() => undefined}
@@ -40,27 +38,11 @@ export const Auth = () => {
                 </Row>
                 <input
                     type='submit'
-                    value="login"
+                    value="create account"
                     className="mt-4"
                     style={{ fontSize: 13 }}
                 />
             </form>
-            <div className="mt-2">
-                <Link to='/'>Forgot your password?</Link>
-            </div>
-        </div>
-    )
-}
-
-export const Row = ({ text, children }: { text: string, children: ReactNode }) => {
-    return (
-        <div className="row pt-1">
-            <div className="col-1">
-                <span>{text}</span>
-            </div>
-            <div className="col">
-                {children}
-            </div>
-        </div>
+        </>
     )
 }
