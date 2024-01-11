@@ -1,5 +1,5 @@
-import { toGlobalId } from "graphql-relay";
-import { extendType, nonNull, objectType, stringArg } from "nexus";
+import { fromGlobalId, toGlobalId } from "graphql-relay";
+import { extendType, idArg, nonNull, objectType, stringArg } from "nexus";
 
 export const post = objectType({
     name: 'post',
@@ -14,6 +14,15 @@ export const post = objectType({
         t.nonNull.dateTime('createdAt')
         t.nonNull.string('link')
         t.nonNull.boolean('votedByLoggedUser')
+        t.nonNull.id('postedById')
+        t.nonNull.list.nonNull.field('comments', {
+            type: 'comment',
+            description: 'list of comments for a post',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            resolve(root: any, _args, ctx) {
+                return ctx.comment.find({ postId: root.id })
+            }
+        })
     },
 })
 
@@ -23,9 +32,18 @@ export const createPost = extendType({
         t.nonNull.field('post', {
             type: 'post',
             description: 'creates a user post',
-            args: { title: nonNull(stringArg()), link: nonNull(stringArg()) },
+            args: {
+                title: nonNull(stringArg()),
+                link: nonNull(stringArg()),
+                userId: nonNull(idArg())
+            },
             resolve(_, args, ctx) {
-                return new ctx.post({ title: args.title, link: args.link }).save()
+                const userId = fromGlobalId(args.userId).id
+                return new ctx.post({
+                    title: args.title,
+                    link: args.link,
+                    postedById: userId
+                }).save()
             }
         })
     },
@@ -39,6 +57,25 @@ export const queryPosts = extendType({
             description: 'returns several posts',
             resolve(_, _args, ctx) {
                 return ctx.post.find()
+            }
+        })
+    },
+})
+
+export const onePost = extendType({
+    type: 'Query',
+    definition(t) {
+        t.nonNull.field('findPost', {
+            type: 'post',
+            description: 'returns one specific post by its global id',
+            args: { postID: nonNull(idArg()) },
+            async resolve(_, args, ctx) {
+                const id = fromGlobalId(args.postID).id
+                const post = await ctx.post.findOne({ _id: id })
+                if (!post) {
+                    throw new Error("post not found");
+                }
+                return post
             }
         })
     },

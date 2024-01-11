@@ -4,6 +4,7 @@ import { NexusGenObjects } from "../../../nexus-typegen";
 const postSchema = new Schema({
     title: { type: String, required: true },
     link: { type: String, required: true },
+    postedById: {type: Schema.Types.ObjectId, require: true},
     votedByLoggedUser: { type: Boolean, required: true, default: false }
 },
     {
