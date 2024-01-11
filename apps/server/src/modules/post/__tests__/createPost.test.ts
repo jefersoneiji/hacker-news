@@ -5,18 +5,20 @@ import { NexusGenFieldTypes } from '../../../../nexus-typegen'
 
 test('should create a post', async () => {
     const mutation = gql`
-        mutation post($title: String!, $link: String!){
-            post(title: $title, link: $link) {
+        mutation post($title: String!, $link: String!, $userId: ID!){
+            post(title: $title, link: $link, userId: $userId) {
                 title
                 link
                 createdAt
                 votedByLoggedUser
+                postedById
             }
         }
         `
     const args = {
         title: 'Why does holding a key fob to your head increase its range?',
-        link: "https://physics.stackexchange.com/questions/101913/why-does-a-remote-car-key-work-when-held-to-your-head-body"
+        link: "https://physics.stackexchange.com/questions/101913/why-does-a-remote-car-key-work-when-held-to-your-head-body",
+        userId: "dXNlcjo2NTllYmJjYzdjNGUyNzZjYmFhZDc0NmY="
     }
 
     const result = await request<{ post: NexusGenFieldTypes['post'] }>('http://localhost:4000/graphql', mutation, args)
@@ -26,4 +28,5 @@ test('should create a post', async () => {
     expect(result.post.createdAt).not.toBeNull()
     expect(result.post.id).not.toBeNull()
     expect(result.post.votedByLoggedUser).toBeFalsy()
+    expect(result.post.postedById).toEqual(args.userId)
 })
