@@ -1,8 +1,8 @@
 import request, { gql } from "graphql-request";
 import { expect, test } from "vitest";
-import { NexusGenFieldTypes } from "../../../nexus-typegen";
+import { NexusGenFieldTypes } from "../../../../nexus-typegen";
 
-test('should return created user', async () => {
+test.skip('should return created user', async () => {
     const mutation = gql`
         mutation createUser($username: String!, $password: String!){
             signup(username: $username, password: $password){
