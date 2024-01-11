@@ -7,6 +7,7 @@ import { useShrink } from "../../utils/useShrink"
 import type { postPageQuery as postPageQueryType } from "./__generated__/postPageQuery.graphql"
 import { PostDisplay } from "./display"
 import { Comment } from "./comment"
+import { useSearchParams } from "react-router-dom"
 
 const postPageQuery = graphql`
     query postPageQuery($postID: ID!){
@@ -27,11 +28,11 @@ const postPageMutation = graphql`
 export const PostPage = () => {
     const [shrink] = useShrink()
 
+    const [searchParams] = useSearchParams()
     const args = {
-        postID: "cG9zdDozNTljNzJhNGY4MDM0ZDdiNmU1YThkMWM=",
+        postID: searchParams.get('id')!,
         userId: "dXNlcjo2NTlmMWY3MTVmOGFkMThkZTI5YWM1NGE="
     }
-
     const data = useLazyLoadQuery<postPageQueryType>(postPageQuery, args)
     const [commitMutation] = useMutation(postPageMutation)
     const [comment, setComment] = useState('')

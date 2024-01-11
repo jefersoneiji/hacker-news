@@ -15,6 +15,10 @@ const homeRowFragment = graphql`
         createdAt
         link
         votedByLoggedUser
+        id
+        comments {
+            id
+        }
     }
 `
 type TRow = {
@@ -45,7 +49,7 @@ export const HomeRow = ({ post, idx }: TRow) => {
                     <span>50 points by <Link to='/' className='link'>jefersoneiji</Link></span>
                     <Link to='/' className='link ms-1'>{dayjs(data.createdAt).fromNow()}</Link>
                     <Link to='/' className='link ms-1'>| hide |</Link>
-                    <Link to='/' className='link ms-1'>54 comments</Link>
+                    <Link to={`/item?id=${data.id}`} className='link ms-1'>{data.comments.length} comments</Link>
                 </div>
             </div>
         </div >

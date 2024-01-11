@@ -14,6 +14,9 @@ fragment displayFragment on post {
     title
     createdAt
     votedByLoggedUser
+    comments {
+        id
+    }
 }
 `
 export const PostDisplay = ({ post }: { post: displayFragment$key }) => {
@@ -48,7 +51,7 @@ export const PostDisplay = ({ post }: { post: displayFragment$key }) => {
                     <Link to='/' className='link ms-1'>| hide |</Link>
                     <Link to='/' className='link ms-1'>past |</Link>
                     <Link to='/' className='link ms-1'>favorite |</Link>
-                    <Link to='/' className='link ms-1'>54 comments</Link>
+                    <Link to='/' className='link ms-1'>{data.comments.length} comments</Link>
                 </div>
             </div>
         </div >
