@@ -1,5 +1,5 @@
 import { extendType, nonNull, objectType, stringArg } from "nexus";
-import { hash } from 'bcrypt'
+import { compare, hash } from 'bcrypt'
 import { sign } from "jsonwebtoken";
 import { APP_SECRET } from "../context";
 
@@ -39,6 +39,27 @@ export const signup = extendType({
                 const token = sign({ userId: new_user._id.toString() }, APP_SECRET)
 
                 return { token, user: new_user }
+            }
+        })
+    },})
+
+export const login = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.nonNull.field('login', {
+            type: 'auth',
+            description: 'log in an user',
+            args: { username: nonNull(stringArg()), password: nonNull(stringArg()) },
+            async resolve(_, args, ctx) {
+                const user = await ctx.user.findOne({ username: args.username })
+                if (!user)  throw Error("user not found!")
+
+                const valid = compare(args.password, user.password)
+                if(!valid) throw new Error("invalid credentials!");
+                
+                const token = sign({userId: user._id.toString()}, APP_SECRET)
+
+                return {token, user}
             }
         })
     },
