@@ -1,4 +1,5 @@
 export * from './post'
 export * from './user'
 export * from './comment'
+export * from './auth'
 export * from '../scalars/date'

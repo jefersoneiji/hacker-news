@@ -50,27 +50,6 @@ export const users = extendType({
         })
     },
 })
-export const signup = extendType({
-    type: 'Mutation',
-    definition(t) {
-        t.nonNull.field('signup', {
-            type: 'user',
-            description: 'signs up a user',
-            args: {
-                username: nonNull(stringArg()),
-                email: stringArg(),
-                password: nonNull(stringArg())
-            },
-            resolve(_, args, ctx) {
-                return new ctx.user({
-                    username: args.username,
-                    email: args.email,
-                    password: args.password
-                }).save()
-            }
-        })
-    },
-})
 
 export const login = extendType({
     type: 'Mutation',

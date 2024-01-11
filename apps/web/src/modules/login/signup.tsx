@@ -7,7 +7,7 @@ import { useMutation } from "react-relay"
 const singupMutation = graphql`
     mutation signupMutation($username: String!, $password: String!){
         signup(username: $username, password: $password){
-            username
+            token
         }
     }
 `
