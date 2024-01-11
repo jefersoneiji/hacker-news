@@ -17,8 +17,8 @@ const postPageQuery = graphql`
     }
 `
 const postPageMutation = graphql`
-    mutation postPageMutation($postId: ID!, $comment: String!){
-        comment(postId: $postId, comment: $comment){
+    mutation postPageMutation($postId: ID!, $comment: String!, $userId: ID!){
+        comment(postId: $postId, comment: $comment, userId: $userId){
             comment
         }
     }
@@ -27,7 +27,11 @@ const postPageMutation = graphql`
 export const PostPage = () => {
     const [shrink] = useShrink()
 
-    const args = { postID: "cG9zdDozNTljNzJhNGY4MDM0ZDdiNmU1YThkMWM=" }
+    const args = {
+        postID: "cG9zdDozNTljNzJhNGY4MDM0ZDdiNmU1YThkMWM=",
+        userId: "dXNlcjo2NTlmMWY3MTVmOGFkMThkZTI5YWM1NGE="
+    }
+
     const data = useLazyLoadQuery<postPageQueryType>(postPageQuery, args)
     const [commitMutation] = useMutation(postPageMutation)
     const [comment, setComment] = useState('')
@@ -38,10 +42,10 @@ export const PostPage = () => {
         commitMutation({
             variables: {
                 postId: args.postID,
-                comment
+                comment,
+                userId: args.userId
             },
             onCompleted() {
-                console.log('comment posted')
                 setComment('')
             }
         })

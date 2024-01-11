@@ -15,6 +15,13 @@ export const comment = objectType({
         })
         t.nonNull.string('comment')
         t.nonNull.dateTime('createdAt')
+        t.field('commenter', {
+            type: 'user',
+            description: 'user that created this comment',
+            resolve(root: any, _, ctx) {
+                return ctx.user.findOne({ comments: root.id, })
+            }
+        })
     },
 })
 
@@ -24,10 +31,22 @@ export const commentPost = extendType({
         t.nonNull.field('comment', {
             type: 'comment',
             description: 'comments a post',
-            args: { postId: nonNull(idArg()), comment: nonNull(stringArg()) },
-            resolve(_, args, ctx) {
+            args: {
+                postId: nonNull(idArg()),
+                comment: nonNull(stringArg()),
+                userId: nonNull(idArg())
+            },
+            async resolve(_, args, ctx) {
                 const id = fromGlobalId(args.postId).id
-                return new ctx.comment({ postId: id, comment: args.comment }).save()
+                const new_comment = await new ctx.comment({
+                    postId: id,
+                    comment: args.comment
+                }).save()
+
+                const userId = fromGlobalId(args.userId).id
+                await ctx.user.findOneAndUpdate({ _id: userId }, { $addToSet: { comments: new_comment._id } })
+
+                return new_comment
             }
         })
     },

@@ -13,6 +13,9 @@ const commentFragment = graphql`
         comments {
             comment
             createdAt
+            commenter {
+                username
+            }
         }
     }
 `
@@ -25,15 +28,21 @@ export const Comment = ({ post }: { post: commentFragment$key }) => {
                 <Row
                     key={idx}
                     comment={elem.comment}
-                    createdAt={elem.createdAt} />
+                    createdAt={elem.createdAt}
+                    username={elem.commenter?.username || ''} />
             )}
         </>
     )
 }
 
-const Row = ({ comment, createdAt }: { comment: string, createdAt: string }) => {
+type TComment = {
+    comment: string,
+    createdAt: string
+    username: string
+}
+const Row = ({ comment, createdAt, username }:TComment ) => {
     const voted = false
-    
+
     return (
         <div className="d-flex flex-row py-2 mt-1" style={{ fontSize: 14 }}>
             <div className="d-flex align-items-center align-self-start" style={{ color: 'var(--gray)' }}>
@@ -50,7 +59,7 @@ const Row = ({ comment, createdAt }: { comment: string, createdAt: string }) => 
             </div>
             <div className="d-flex flex-column">
                 <div className='d-flex flex-row align-items-end'>
-                    <Link to='/' className='link ms-1'>jefersoneiji</Link>
+                    <Link to='/' className='link ms-1'>{username}</Link>
                     <Link to='/' className='link ms-1'>{dayjs(createdAt).fromNow()}</Link>
 
                     <Link to='/' className='link ms-1'>| next [–]</Link>
