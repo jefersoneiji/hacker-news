@@ -18,6 +18,7 @@ export const comment = objectType({
         t.field('commenter', {
             type: 'user',
             description: 'user that created this comment',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             resolve(root: any, _, ctx) {
                 return ctx.user.findOne({ comments: root.id, })
             }

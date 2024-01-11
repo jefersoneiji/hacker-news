@@ -2,6 +2,7 @@ import request, { gql } from 'graphql-request'
 import { expect, test } from 'vitest'
 
 import { NexusGenFieldTypes } from '../../../../nexus-typegen'
+import { toGlobalId } from 'graphql-relay'
 
 test('should create a post', async () => {
     const mutation = gql`
@@ -28,5 +29,5 @@ test('should create a post', async () => {
     expect(result.post.createdAt).not.toBeNull()
     expect(result.post.id).not.toBeNull()
     expect(result.post.votedByLoggedUser).toBeFalsy()
-    expect(result.post.postedById).toEqual(args.userId)
+    expect(toGlobalId('user',result.post.postedById)).toEqual(args.userId)
 })
