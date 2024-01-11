@@ -14,6 +14,7 @@ export const post = objectType({
         t.nonNull.dateTime('createdAt')
         t.nonNull.string('link')
         t.nonNull.boolean('votedByLoggedUser')
+        t.nonNull.id('postedById')
         t.nonNull.list.nonNull.field('comments', {
             type: 'comment',
             description: 'list of comments for a post',
@@ -31,9 +32,18 @@ export const createPost = extendType({
         t.nonNull.field('post', {
             type: 'post',
             description: 'creates a user post',
-            args: { title: nonNull(stringArg()), link: nonNull(stringArg()) },
+            args: {
+                title: nonNull(stringArg()),
+                link: nonNull(stringArg()),
+                userId: nonNull(idArg())
+            },
             resolve(_, args, ctx) {
-                return new ctx.post({ title: args.title, link: args.link }).save()
+                const userId = fromGlobalId(args.userId).id
+                return new ctx.post({
+                    title: args.title,
+                    link: args.link,
+                    postedById: userId
+                }).save()
             }
         })
     },

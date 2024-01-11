@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom"
 import { useShrink } from "../../utils/useShrink"
 
 const postMutation = graphql`
-    mutation postMutation($title: String!, $link: String!){
-        post(title: $title, link: $link){
+    mutation postMutation($title: String!, $link: String!, $userId: ID!){
+        post(title: $title, link: $link, userId: $userId){
             title
             link
             id
@@ -25,11 +25,12 @@ export const Post = () => {
     const [commitMutation] = useMutation(postMutation)
     const navigate = useNavigate()
 
+    const userId = "dXNlcjo2NTllYzI2YmQ3ODI3ODc0ZWU4MmNmODA="
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         
         commitMutation({
-            variables: { title, link },
+            variables: { title, link, userId },
             onCompleted() {
                 setTitle('')
                 setLink('')
