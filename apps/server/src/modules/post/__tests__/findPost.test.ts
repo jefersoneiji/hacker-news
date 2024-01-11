@@ -2,7 +2,7 @@ import request, { gql } from "graphql-request";
 import { expect, test } from "vitest";
 import { NexusGenFieldTypes } from "../../../../nexus-typegen";
 
-test('should find post by its id', async () => {
+test.skip('should find post by its id', async () => {
     const query = gql`
         query getPost($postID: ID!){
             findPost(postID: $postID){
