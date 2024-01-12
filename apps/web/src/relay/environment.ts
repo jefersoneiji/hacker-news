@@ -16,7 +16,7 @@ async function fetchQuery(
     _cacheConfig: CacheConfig,
     _uploadables?: UploadableMap | null
 ) {
-    const token = localStorage.getItem('AUTH_TOKEN');
+    const token = localStorage.getItem('hn-token');
     return fetch(base_url + '/graphql', {
         method: 'POST',
         headers: {
