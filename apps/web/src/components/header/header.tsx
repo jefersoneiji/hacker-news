@@ -7,7 +7,7 @@ export const Header = () => {
     const [shrink] = useShrink()
     return (
         <header>
-            <nav className='navbar navbar-expand-lg' style={{ backgroundColor: "#ff6600", maxHeight: shrink ? '24px' : '' }}>
+            <nav className='navbar navbar-expand-lg' style={{ backgroundColor: 'var(--blaze-orange)', maxHeight: shrink ? '24px' : '' }}>
                 <div className='container-fluid' style={{ paddingLeft: '2px' }}>
                     <Link to="/" className='navbar-brand d-flex align-items-center' style={{ marginRight: 0 }}>
                         <img src={logo} width={18} height={18} style={{ border: '1px solid white', marginRight: '4px' }} />
