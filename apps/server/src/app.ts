@@ -13,7 +13,7 @@ router.all('/graphql',
     graphqlHTTP(async (req) => ({
         schema,
         context: context({req}),
-        graphiql: true
+        graphiql: {headerEditorEnabled: true}
     }))
 )
 

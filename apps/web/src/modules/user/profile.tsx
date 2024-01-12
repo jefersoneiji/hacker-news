@@ -9,7 +9,7 @@ extend(relativeTime)
 import { Header } from "../../components/header/header"
 import { useShrink } from "../../utils/useShrink"
 import { profileQuery as profileQueryType } from "./__generated__/profileQuery.graphql"
-import { TwoFactorAuthenticationModal } from "./2fa-modal"
+import { TwoFactorModal } from "./twfa-modal"
 
 const profileQuery = graphql`
     query profileQuery($userID: ID!) {
@@ -44,17 +44,7 @@ export const Profile = () => {
                 <Row text="karma">
                     <span style={{ color: 'var(--gray)' }}>{data.user.karma}</span>
                 </Row>
-                <Row text="2fa">
-                    <input
-                        className="mb-1"
-                        type="button"
-                        value={"enable"}
-                        data-bs-toggle="modal"
-                        data-bs-target="#staticBackdrop"
-                        style={{ fontSize: 13 }}
-                    />
-                </Row>
-                <TwoFactorAuthenticationModal />
+                <TwoFactorModal />
                 <form onSubmit={onSubmit}>
                     <Row text="about">
                         <textarea
@@ -95,7 +85,7 @@ export const Profile = () => {
     )
 }
 
-const Row = ({ text, children }: { text: string, children: ReactNode }) => {
+export const Row = ({ text, children }: { text: string, children: ReactNode }) => {
     return (
         <div className="row">
             <div className="col-1">

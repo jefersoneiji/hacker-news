@@ -1,5 +1,5 @@
 import { fromGlobalId, toGlobalId } from "graphql-relay";
-import { extendType, idArg, nonNull, objectType, stringArg } from "nexus";
+import { extendType, idArg, nonNull, objectType } from "nexus";
 
 export const user = objectType({
     name: 'user',
@@ -16,6 +16,20 @@ export const user = objectType({
         t.string('about')
         t.nonNull.int('karma')
         t.nonNull.string('password')
+        t.nonNull.field('otp', {
+            type: 'otp',
+            description: 'otp fields from this user',
+            async resolve(_root, _, ctx) {
+                const user = await ctx.user.findOne<{
+                    otp_auth_url: string, otp_base32: string
+                }>({ _id: ctx.userId }).then(res => res!)
+
+                return {
+                    otp_auth_url: user.otp_auth_url,
+                    otp_base32: user.otp_base32
+                }
+            }
+        })
     },
 })
 
