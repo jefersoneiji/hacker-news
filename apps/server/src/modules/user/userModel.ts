@@ -7,7 +7,9 @@ const userSchema = new Schema({
     about: String,
     karma: { type: Number, required: true, default: 0 },
     password: { type: String, required: true },
-    comments: { type: [{ type: Schema.Types.ObjectId, ref: 'comment' }] }
+    comments: { type: [{ type: Schema.Types.ObjectId, ref: 'comment' }] },
+    otp_auth_url: { type: String },
+    otp_base32: { type: String },
 },
     { timestamps: { createdAt: true, updatedAt: false } }
 )

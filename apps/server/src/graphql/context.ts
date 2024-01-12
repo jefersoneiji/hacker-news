@@ -2,7 +2,7 @@ import { Request } from "koa";
 import { commentModel } from "../modules/comment/commentModel";
 import { postModel } from "../modules/post/postModel";
 import { userModel } from "../modules/user/userModel";
-import { verify } from "jsonwebtoken";
+import { decodeAuthHeader } from "../modules/auth/decode";
 
 export const APP_SECRET = 'SUPER_SECRET_HERE'
 
@@ -11,17 +11,6 @@ export interface Context {
     user: typeof userModel
     comment: typeof commentModel
     userId?: string;
-}
-
-interface AuthTokenPayload {
-    userId: string
-}
-const decodeAuthHeader = (authHeader: string): AuthTokenPayload => {
-    const token = authHeader.replace('Bearer ', "")
-
-    if (!token) throw new Error("no token found!");
-
-    return verify(token, APP_SECRET) as AuthTokenPayload
 }
 
 export const context = ({ req }: { req: Request }): Context => {
