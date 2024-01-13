@@ -19,6 +19,7 @@ const profileQuery = graphql`
             email
             about
             karma
+            ...twfaModalFragment
         }
     }
 `
@@ -44,7 +45,7 @@ export const Profile = () => {
                 <Row text="karma">
                     <span style={{ color: 'var(--gray)' }}>{data.user.karma}</span>
                 </Row>
-                <TwoFactorModal />
+                <TwoFactorModal user={data.user} />
                 <form onSubmit={onSubmit}>
                     <Row text="about">
                         <textarea

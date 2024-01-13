@@ -1,19 +1,33 @@
 import { graphql } from "relay-runtime"
 import { Row } from "./profile.js"
-import { useMutation } from "react-relay"
+import { useFragment, useMutation } from "react-relay"
 import type { twfaModalMutation as twfaModalMutationType } from "./__generated__/twfaModalMutation.graphql.js"
 import { FormEvent, useState } from "react"
 import { toDataURL } from 'qrcode'
+import { EnableTwfa } from "./enabletwfa.js"
+import { twfaModalFragment$key } from "./__generated__/twfaModalFragment.graphql.js"
+
+const TwoFAFragment = graphql`
+    fragment twfaModalFragment on user {
+        otp {
+            otp_auth_url
+            otp_base32
+            otp_enabled
+        }
+        id
+    }
+`
 
 const TwoFAMutation = graphql`
     mutation twfaModalMutation {
         otp {
             otp_auth_url
             otp_base32
+            otp_enabled
         }
     }
 `
-export const TwoFactorModal = () => {
+export const TwoFactorModal = ({ user }:{user: twfaModalFragment$key}) => {
     const [commitMutation] = useMutation<twfaModalMutationType>(TwoFAMutation)
     const [qrCode, setQrCode] = useState('')
     const [otpBase32, setOtpBase32] = useState('')
@@ -21,13 +35,14 @@ export const TwoFactorModal = () => {
     const onClick = () => {
         commitMutation({
             variables: {},
-            onCompleted(response, _errors) {
+            onCompleted(response) {
                 toDataURL(response.otp.otp_auth_url).then(res => setQrCode(res))
                 setOtpBase32(response.otp.otp_base32)
             },
         })
     }
 
+    const data = useFragment(TwoFAFragment, user)
     const onSubmit = (e: FormEvent<HTMLElement>) => {
         e.preventDefault()
     }
@@ -39,7 +54,7 @@ export const TwoFactorModal = () => {
                 <input
                     className="mb-1"
                     type="button"
-                    value={"enable"}
+                    value={data.otp.otp_enabled ? "disable" : "enable"}
                     onClick={onClick}
                     data-bs-toggle="modal"
                     data-bs-target="#staticBackdrop"
@@ -97,17 +112,7 @@ export const TwoFactorModal = () => {
                             >
                                 Close
                             </button>
-                            <button
-                                type='button'
-                                className="btn"
-                                style={{
-                                    backgroundColor: 'var(--blaze-orange)',
-                                    color: 'var(--white)'
-                                }}
-                                data-bs-dismiss="modal"
-                            >
-                                Verify & Activate
-                            </button>
+                            <EnableTwfa authCode={authCode} />
                         </div>
                     </div>
                 </div>
@@ -119,7 +124,7 @@ const SectionHeader = ({ text }: { text: string }) => {
     return (
         <>
             <h6 className="mt-1" style={{ color: 'var(--blaze-orange)' }}>{text}</h6>
-            <hr className="mx-0  mt-0 mb-3"/>
+            <hr className="mx-0  mt-0 mb-3" />
         </>
     )
 }

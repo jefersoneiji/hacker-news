@@ -9,8 +9,8 @@ export const generateRandomBase32 = () => {
 }
 
 export const totp = (base32_secret: string, username: string) => new TOTP({
-    issuer: username,
-    label: "Hacker-News",
+    issuer: "Hacker-News",
+    label: username,
     algorithm: "SHA1",
     digits: 6,
     secret: base32_secret,

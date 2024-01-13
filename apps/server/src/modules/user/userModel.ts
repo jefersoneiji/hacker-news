@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { NexusGenObjects } from "../../../nexus-typegen";
 
-const userSchema = new Schema({
+export const userSchema = new Schema({
     username: { type: String, required: true },
     email: String,
     about: String,
@@ -10,6 +10,7 @@ const userSchema = new Schema({
     comments: { type: [{ type: Schema.Types.ObjectId, ref: 'comment' }] },
     otp_auth_url: { type: String, default: '' },
     otp_base32: { type: String, default: '' },
+    otp_enabled: {type: Boolean, default: false}
 },
     { timestamps: { createdAt: true, updatedAt: false } }
 )
