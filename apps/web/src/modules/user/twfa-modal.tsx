@@ -6,6 +6,7 @@ import { FormEvent, useState } from "react"
 import { toDataURL } from 'qrcode'
 import { EnableTwfa } from "./enabletwfa.js"
 import { twfaModalFragment$key } from "./__generated__/twfaModalFragment.graphql.js"
+import { DisableTwfa } from "./disabletwfa.js"
 
 const TwoFAFragment = graphql`
     fragment twfaModalFragment on user {
@@ -27,15 +28,17 @@ const TwoFAMutation = graphql`
         }
     }
 `
-export const TwoFactorModal = ({ user }:{user: twfaModalFragment$key}) => {
+export const TwoFactorModal = ({ user }: { user: twfaModalFragment$key }) => {
     const [commitMutation] = useMutation<twfaModalMutationType>(TwoFAMutation)
     const [qrCode, setQrCode] = useState('')
+    const [otpUrl, setOtpUrl] = useState('')
     const [otpBase32, setOtpBase32] = useState('')
 
     const onClick = () => {
         commitMutation({
             variables: {},
             onCompleted(response) {
+                setOtpUrl(response.otp.otp_auth_url)
                 toDataURL(response.otp.otp_auth_url).then(res => setQrCode(res))
                 setOtpBase32(response.otp.otp_base32)
             },
@@ -48,19 +51,22 @@ export const TwoFactorModal = ({ user }:{user: twfaModalFragment$key}) => {
     }
 
     const [authCode, setAuthCode] = useState('')
+    console.log('enabled is: ', data.otp.otp_enabled)
     return (
         <>
-            <Row text="2fa">
+            {data.otp.otp_enabled === false && <Row text="2fa">
                 <input
                     className="mb-1"
                     type="button"
-                    value={data.otp.otp_enabled ? "disable" : "enable"}
+                    value={"enable"}
                     onClick={onClick}
                     data-bs-toggle="modal"
                     data-bs-target="#staticBackdrop"
                     style={{ fontSize: 13 }}
                 />
             </Row>
+            }
+            {data.otp.otp_enabled && <DisableTwfa />}
 
             <div
                 className="modal fade"
@@ -112,7 +118,12 @@ export const TwoFactorModal = ({ user }:{user: twfaModalFragment$key}) => {
                             >
                                 Close
                             </button>
-                            <EnableTwfa authCode={authCode} />
+                            <EnableTwfa
+                                authCode={authCode}
+                                setAuthCode={setAuthCode}
+                                base32={otpBase32}
+                                otpUrl={otpUrl}
+                            />
                         </div>
                     </div>
                 </div>
