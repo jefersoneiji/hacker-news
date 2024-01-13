@@ -7,6 +7,7 @@ test('should generate otp and base32 codes', async () => {
             otp {
                 otp_auth_url
                 otp_base32
+                otp_enabled
             }
         }
         `
@@ -16,4 +17,5 @@ test('should generate otp and base32 codes', async () => {
 
     expect(result.otp.otp_auth_url).toBeTypeOf("string")
     expect(result.otp.otp_base32).toBeTypeOf("string")
+    expect(result.otp.otp_enabled).toEqual(false)
 })
