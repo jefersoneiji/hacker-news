@@ -51,7 +51,7 @@ export const TwoFactorModal = ({ user }: { user: twfaModalFragment$key }) => {
     }
 
     const [authCode, setAuthCode] = useState('')
-    console.log('enabled is: ', data.otp.otp_enabled)
+    
     return (
         <>
             {data.otp.otp_enabled === false && <Row text="2fa">

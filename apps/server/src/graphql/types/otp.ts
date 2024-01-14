@@ -1,6 +1,8 @@
-import { extendType, nonNull, objectType, stringArg } from "nexus"
+import { extendType, idArg, nonNull, objectType, stringArg } from "nexus"
 import { generateRandomBase32, totp } from "../../modules/auth/2fa"
-import { NexusGenObjects } from "../../../nexus-typegen"
+import { fromGlobalId } from "graphql-relay"
+import { sign } from "jsonwebtoken"
+import { APP_SECRET } from "../context"
 
 export const otp = objectType({
     name: 'otp',
@@ -85,6 +87,32 @@ export const optDisable = extendType({
                 if (!user) throw new Error("user not found");
 
                 return user
+            }
+        })
+    },
+})
+
+export const validateOTP = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.nonNull.field('validateOTP', {
+            type: 'auth',
+            description: 'validates token from user during login',
+            args: { userId: nonNull(idArg()), token: nonNull(stringArg()) },
+            async resolve(_, args, ctx) {
+                const id = fromGlobalId(args.userId).id
+                const user = await ctx.user.findOne({ _id: id })
+
+                if (!user) throw new Error("user not found!");
+
+                const otp = totp(user.otp_base32, id)
+                
+                const delta = otp.validate({ token: args.token, window: 1 })
+                if (delta === null) throw new Error("invalid token!");
+                
+                const token = sign({ userId: user._id.toString() }, APP_SECRET)
+                
+                return { token, user }
             }
         })
     },

@@ -8,7 +8,13 @@ import type { authMutation as authMutationType } from "./__generated__/authMutat
 const authMutation = graphql`
     mutation authMutation($username: String!, $password: String!){
         login(username: $username, password: $password) {
-            token
+            token 
+            user {
+                id
+                otp {
+                    otp_enabled
+                }
+            }
         }
     }
 `
@@ -29,9 +35,16 @@ export const Auth = () => {
                 password
             },
             onCompleted(response) {
-                localStorage.setItem('hn-token', response.login.token)
                 setUsername('')
                 setPassword('')
+                //TODO: add test
+                const { login } = response
+                
+                if (login.user.otp.otp_enabled) {
+                    navigate(`/token?id=${login.user.id}`)
+                    return;
+                }
+                localStorage.setItem('hn-token', login.token)
                 navigate('/')
             }
         })

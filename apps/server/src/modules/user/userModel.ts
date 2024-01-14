@@ -10,11 +10,16 @@ export const userSchema = new Schema({
     comments: { type: [{ type: Schema.Types.ObjectId, ref: 'comment' }] },
     otp_auth_url: { type: String, default: '' },
     otp_base32: { type: String, default: '' },
-    otp_enabled: {type: Boolean, default: false}
+    otp_enabled: { type: Boolean, default: false }
 },
     { timestamps: { createdAt: true, updatedAt: false } }
 )
 
-type userDocument = NexusGenObjects['user'] & Document
+type OTP = {
+    otp_base32: string,
+    otp_auth_url: string,
+    otp_enabled: boolean
+}
+type userDocument = NexusGenObjects['user'] & Document & OTP
 
 export const userModel = mongoose.model<userDocument>('user', userSchema)

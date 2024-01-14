@@ -18,9 +18,6 @@ export const DisableTwfa = () => {
     const onClick = () => {
         commitMutation({
             variables: {},
-            onCompleted() {
-                console.log('disabled otp')
-            },
         })
     }
     return (
