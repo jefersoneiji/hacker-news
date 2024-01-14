@@ -1,5 +1,6 @@
 import { fromGlobalId, toGlobalId } from "graphql-relay";
-import { extendType, idArg, nonNull, objectType, stringArg } from "nexus";
+import { extendType, idArg, nonNull, objectType } from "nexus";
+import { NexusGenObjects } from "../../../nexus-typegen";
 
 export const user = objectType({
     name: 'user',
@@ -16,6 +17,19 @@ export const user = objectType({
         t.string('about')
         t.nonNull.int('karma')
         t.nonNull.string('password')
+        t.nonNull.field('otp', {
+            type: 'otp',
+            description: 'otp fields from this user',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            async resolve(root: any, _, ctx) {
+                const user = await ctx.user.findOne<NexusGenObjects['otp']>({ _id: root.id }).then(res => res!)
+                return {
+                    otp_auth_url: user.otp_auth_url,
+                    otp_base32: user.otp_base32,
+                    otp_enabled: user.otp_enabled,
+                }
+            }
+        })
     },
 })
 
@@ -46,45 +60,6 @@ export const users = extendType({
             description: 'return an array of users',
             resolve(_, _args, ctx) {
                 return ctx.user.find()
-            }
-        })
-    },
-})
-export const signup = extendType({
-    type: 'Mutation',
-    definition(t) {
-        t.nonNull.field('signup', {
-            type: 'user',
-            description: 'signs up a user',
-            args: {
-                username: nonNull(stringArg()),
-                email: stringArg(),
-                password: nonNull(stringArg())
-            },
-            resolve(_, args, ctx) {
-                return new ctx.user({
-                    username: args.username,
-                    email: args.email,
-                    password: args.password
-                }).save()
-            }
-        })
-    },
-})
-
-export const login = extendType({
-    type: 'Mutation',
-    definition(t) {
-        t.nonNull.field('login', {
-            type: 'user',
-            description: 'logs in an user',
-            args: { username: nonNull(stringArg()), password: nonNull(stringArg()) },
-            async resolve(_, args, ctx) {
-                const user = await ctx.user.findOne({ username: args.username })
-                if (user?.password !== args.password) {
-                    throw new Error("invalid credentials. try again");
-                }
-                return user
             }
         })
     },

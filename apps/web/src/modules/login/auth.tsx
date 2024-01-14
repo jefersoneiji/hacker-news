@@ -3,11 +3,18 @@ import { Link, useNavigate } from "react-router-dom"
 import { Signup } from "./signup"
 import { graphql } from "relay-runtime"
 import { useMutation } from "react-relay"
+import type { authMutation as authMutationType } from "./__generated__/authMutation.graphql"
 
 const authMutation = graphql`
     mutation authMutation($username: String!, $password: String!){
         login(username: $username, password: $password) {
-            username
+            token 
+            user {
+                id
+                otp {
+                    otp_enabled
+                }
+            }
         }
     }
 `
@@ -17,7 +24,7 @@ export const Auth = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
-    const [commitMutation] = useMutation(authMutation)
+    const [commitMutation] = useMutation<authMutationType>(authMutation)
 
     const onSubmitLogin = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -27,9 +34,17 @@ export const Auth = () => {
                 username,
                 password
             },
-            onCompleted() {
+            onCompleted(response) {
                 setUsername('')
                 setPassword('')
+                //TODO: add test
+                const { login } = response
+                
+                if (login.user.otp.otp_enabled) {
+                    navigate(`/token?id=${login.user.id}`)
+                    return;
+                }
+                localStorage.setItem('hn-token', login.token)
                 navigate('/')
             }
         })

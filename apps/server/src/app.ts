@@ -10,11 +10,11 @@ const router = new Router()
 
 console.clear()
 router.all('/graphql',
-    graphqlHTTP({
+    graphqlHTTP(async (req) => ({
         schema,
-        context,
-        graphiql: true
-    })
+        context: context({req}),
+        graphiql: {headerEditorEnabled: true}
+    }))
 )
 
 app

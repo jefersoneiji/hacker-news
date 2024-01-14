@@ -9,6 +9,7 @@ extend(relativeTime)
 import { Header } from "../../components/header/header"
 import { useShrink } from "../../utils/useShrink"
 import { profileQuery as profileQueryType } from "./__generated__/profileQuery.graphql"
+import { TwoFactorModal } from "./twfa-modal"
 
 const profileQuery = graphql`
     query profileQuery($userID: ID!) {
@@ -18,6 +19,7 @@ const profileQuery = graphql`
             email
             about
             karma
+            ...twfaModalFragment
         }
     }
 `
@@ -34,21 +36,22 @@ export const Profile = () => {
         <div className='mx-auto' style={{ width: shrink ? '85%' : '' }}>
             <Header />
             <div className="container-fluid px-1 py-3" style={{ backgroundColor: 'var(--spring-wood)' }}>
+                <Row text="user">
+                    <span>{data.user.username}</span>
+                </Row>
+                <Row text="created">
+                    <span>{dayjs(data.user.createdAt).fromNow()}</span>
+                </Row>
+                <Row text="karma">
+                    <span style={{ color: 'var(--gray)' }}>{data.user.karma}</span>
+                </Row>
+                <TwoFactorModal user={data.user} />
                 <form onSubmit={onSubmit}>
-                    <Row text="user">
-                        <span>{data.user.username}</span>
-                    </Row>
-                    <Row text="created">
-                        <span>{dayjs(data.user.createdAt).fromNow()}</span>
-                    </Row>
-                    <Row text="karma">
-                        <span style={{ color: 'var(--gray)' }}>{data.user.karma}</span>
-                    </Row>
                     <Row text="about">
                         <textarea
                             value={data.user.about || ''}
                             onChange={() => undefined}
-                            style={{fontSize: 13}}
+                            style={{ fontSize: 13 }}
                         />
                     </Row>
                     <div className="row">
@@ -83,7 +86,7 @@ export const Profile = () => {
     )
 }
 
-const Row = ({ text, children }: { text: string, children: ReactNode }) => {
+export const Row = ({ text, children }: { text: string, children: ReactNode }) => {
     return (
         <div className="row">
             <div className="col-1">

@@ -6,13 +6,13 @@ test('should login user sucessfully', async () => {
     const mutation = gql`
         mutation logUser($username: String!, $password: String!){
             login(username: $username, password: $password){
-                username
+                token
             }
         }
     `
 
-    const args = { username: "jefersoneiji", password: '123456' }
+    const args = { username: "superjeferson", password: '123456' }
     const result = await request<NexusGenFieldTypes['Mutation']>('http://localhost:4000/graphql', mutation, args)
 
-    expect(result.login.username)
+    expect(result.login.token)
 })
