@@ -37,7 +37,6 @@ export const Auth = () => {
             onCompleted(response) {
                 setUsername('')
                 setPassword('')
-                //TODO: add test
                 const { login } = response
                 
                 if (login.user.otp.otp_enabled) {

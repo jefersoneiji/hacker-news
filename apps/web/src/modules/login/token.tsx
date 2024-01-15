@@ -49,6 +49,7 @@ export const Token = () => {
                     value={userToken}
                     autoComplete="off"
                     autoCapitalize="off"
+                    autoFocus={true}
                     className="mt-3 mb-3"
                     onChange={(e) => setUserToken(e.target.value)}
                     placeholder="token" />
