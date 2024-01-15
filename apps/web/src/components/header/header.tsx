@@ -2,6 +2,9 @@ import { Link } from 'react-router-dom'
 
 import { useShrink } from "../../utils/useShrink"
 import logo from './y18.svg'
+import { graphql } from 'relay-runtime'
+import { useLazyLoadQuery } from 'react-relay'
+import type { headerQuery as headerQueryType } from './__generated__/headerQuery.graphql'
 
 export const Header = () => {
     const [shrink] = useShrink()
@@ -60,10 +63,46 @@ const NavItem = ({ text, href }: { text: string, href: string }) => {
     )
 }
 
+const LogoutItem = () => {
+    const doLogout = () => {
+        location.reload()
+        localStorage.removeItem('hn-token')
+    }
+    return (
+        <li className='nav-item'>
+            <Link to={'/'} className='nav-link text-dark' onClick={doLogout}>
+                logout
+            </Link>
+        </li>
+    )
+}
+
+const headerQuery = graphql`
+    query headerQuery {
+        user {
+            username
+            karma
+            id
+        }
+    }
+`
+
+const AuthItems = ({ token }: { token: string }) => {
+    const { user } = useLazyLoadQuery<headerQueryType>(headerQuery, {})
+    return (
+        <>
+            {token && <NavItem text={`${user.username} (${user.karma})`} href={`/user?id=${user.id}`} />}
+            {token && <span>&nbsp;|&nbsp;</span>}
+            {token && <LogoutItem />}
+        </>
+    )
+}
 const NavAuth = () => {
+    const token = localStorage.getItem('hn-token')
     return (
         <div className='d-flex flex-lg-fill justify-content-lg-end' style={{ listStyle: 'none' }}>
-            <NavItem text='login' href='/login' />
+            {!token && <NavItem text='login' href='/login' />}
+            {token && <AuthItems token={token} />}
         </div>
     )
 }

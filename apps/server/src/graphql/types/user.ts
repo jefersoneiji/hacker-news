@@ -39,10 +39,13 @@ export const userQuery = extendType({
         t.nonNull.field('user', {
             type: 'user',
             description: 'returns one user',
-            args: { userID: nonNull(idArg()) },
+            args: { userID: idArg() },
             async resolve(_, args, ctx) {
-                const id = fromGlobalId(args.userID).id
-                const res = await ctx.user.findOne({ _id: id });
+                let id = ""
+                if (args.userID) {
+                    id = fromGlobalId(args.userID).id
+                }
+                const res = await ctx.user.findOne({ _id: id || ctx.userId });
                 if (!res) {
                     throw new Error("user not found");
                 }
