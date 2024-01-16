@@ -2,6 +2,7 @@ import mongoose, { Schema, Document } from "mongoose";
 
 interface user {
     about?: string | null; // String
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     createdAt: any; // DateTime!
     email?: string | null; // String
     karma: number; // Int!

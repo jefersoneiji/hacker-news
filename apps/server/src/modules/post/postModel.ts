@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 interface post {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     createdAt: any; // DateTime!
     link: string; // String!
     postedById: string; // ID!
