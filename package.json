@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build": "turbo build --filter=server",
+    "build:web": "turbo build --filter=web",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "start": "turbo start --filter=server",

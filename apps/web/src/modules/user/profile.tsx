@@ -25,7 +25,7 @@ const profileQuery = graphql`
 `
 export const Profile = () => {
     const [searchParams] = useSearchParams()
-    const userID = searchParams.get('id')
+    const userID = searchParams.get('id')!
     const data = useLazyLoadQuery<profileQueryType>(profileQuery, { userID })
 
     const [shrink] = useShrink()

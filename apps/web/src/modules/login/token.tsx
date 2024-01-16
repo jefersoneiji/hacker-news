@@ -13,7 +13,7 @@ const tokenMutation = graphql`
 `
 export const Token = () => {
     const [searchParams] = useSearchParams()
-    const userId = searchParams.get('id')
+    const userId = searchParams.get('id')!
 
     const [userToken, setUserToken] = useState('')
     const [commitMutation] = useMutation<tokenMutationType>(tokenMutation)
