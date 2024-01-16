@@ -8,6 +8,7 @@ import type { headerQuery as headerQueryType } from './__generated__/headerQuery
 
 export const Header = () => {
     const [shrink] = useShrink()
+    const isLogged = localStorage.getItem('hn-token')
     return (
         <header>
             <nav className='navbar navbar-expand-lg' style={{ backgroundColor: 'var(--blaze-orange)', maxHeight: shrink ? '24px' : '' }}>
@@ -41,7 +42,7 @@ export const Header = () => {
                             <VericalRuler />
                             <NavItem text='jobs' href='/jobs' />
                             <VericalRuler />
-                            <NavItem text='submit' href='/submit' />
+                            <NavItem text='submit' href={isLogged ? '/submit' : '/login'} />
                         </ul>
                         <NavAuth />
                     </div>
