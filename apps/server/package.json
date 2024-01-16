@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "ts-node-dev --transpile-only src/index.ts",
     "test": "vitest",
-    "env":"cp .env.example .env",
+    "env": "cp .env.example .env",
+    "build": "yarn tsc",
+    "start": "node dist/src/index.js",
     "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0"
   },
   "devDependencies": {
