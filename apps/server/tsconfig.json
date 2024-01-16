@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+      "target": "ES2018",
+      "module": "commonjs",
+      "lib": [
+        "esnext"
+      ],
+      "strict": true,
+      "rootDir": ".",
+      "outDir": "dist",
+      "sourceMap": true,
+      "skipLibCheck": true,
+      "esModuleInterop": true,
+    },
+    "exclude":["node_modules","src/**/*.test.ts"]
+  }

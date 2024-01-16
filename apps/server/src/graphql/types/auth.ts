@@ -58,7 +58,7 @@ export const login = extendType({
             description: 'log in an user',
             args: { username: nonNull(stringArg()), password: nonNull(stringArg()) },
             async resolve(_, args, ctx) {
-                const user = await ctx.user.findOne<NexusGenObjects['user'] & { _id: ObjectId }>({ username: args.username })
+                const user = await ctx.user.findOne({ username: args.username })
                 if (!user) throw Error("user not found!")
 
                 const valid = compare(args.password, user.password)

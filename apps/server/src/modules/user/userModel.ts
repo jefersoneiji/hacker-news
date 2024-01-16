@@ -1,5 +1,13 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { NexusGenObjects } from "../../../nexus-typegen";
+
+interface user {
+    about?: string | null; // String
+    createdAt: any; // DateTime!
+    email?: string | null; // String
+    karma: number; // Int!
+    password: string; // String!
+    username: string; // String!
+}
 
 export const userSchema = new Schema({
     username: { type: String, required: true },
@@ -20,6 +28,6 @@ type OTP = {
     otp_auth_url: string,
     otp_enabled: boolean
 }
-type userDocument = NexusGenObjects['user'] & Document & OTP
+type userDocument = user & Document & OTP
 
 export const userModel = mongoose.model<userDocument>('user', userSchema)
