@@ -11,6 +11,7 @@ export const user = objectType({
             resolve: (root: any) => toGlobalId('user', root.id)
         })
         t.nonNull.string('username')
+        //@ts-ignore
         t.nonNull.dateTime('createdAt')
         t.string('email')
         t.string('about')
