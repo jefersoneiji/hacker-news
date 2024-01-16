@@ -2,8 +2,6 @@ import { extendType, nonNull, objectType, stringArg } from "nexus";
 import { compare, hash } from 'bcrypt'
 import { sign } from "jsonwebtoken";
 import { APP_SECRET } from "../context";
-import { NexusGenObjects } from "../../../nexus-typegen";
-import { ObjectId } from "mongoose";
 
 export const auth = objectType({
     name: 'auth',
@@ -36,8 +34,7 @@ export const signup = extendType({
 
                 const hashed_password = await hash(args.password, 10)
 
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const new_user: any = await new ctx.user({ username: args.username, password: hashed_password }).save()
+                const new_user = await new ctx.user({ username: args.username, password: hashed_password }).save()
 
                 const token = sign({ userId: new_user._id.toString() }, APP_SECRET)
 
@@ -58,7 +55,7 @@ export const login = extendType({
             description: 'log in an user',
             args: { username: nonNull(stringArg()), password: nonNull(stringArg()) },
             async resolve(_, args, ctx) {
-                const user = await ctx.user.findOne<NexusGenObjects['user'] & { _id: ObjectId }>({ username: args.username })
+                const user = await ctx.user.findOne({ username: args.username })
                 if (!user) throw Error("user not found!")
 
                 const valid = compare(args.password, user.password)

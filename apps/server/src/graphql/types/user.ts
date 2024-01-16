@@ -1,6 +1,5 @@
 import { fromGlobalId, toGlobalId } from "graphql-relay";
-import { extendType, idArg, nonNull, objectType } from "nexus";
-import { NexusGenObjects } from "../../../nexus-typegen";
+import { extendType, idArg, objectType } from "nexus";
 
 export const user = objectType({
     name: 'user',
@@ -22,7 +21,7 @@ export const user = objectType({
             description: 'otp fields from this user',
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             async resolve(root: any, _, ctx) {
-                const user = await ctx.user.findOne<NexusGenObjects['otp']>({ _id: root.id }).then(res => res!)
+                const user = await ctx.user.findOne({ _id: root.id }).then(res => res!)
                 return {
                     otp_auth_url: user.otp_auth_url,
                     otp_base32: user.otp_base32,
