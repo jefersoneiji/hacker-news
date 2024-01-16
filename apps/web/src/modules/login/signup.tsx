@@ -3,6 +3,7 @@ import { Row } from "./auth"
 import { FormEvent, useState } from "react"
 import { graphql } from "relay-runtime"
 import { useMutation } from "react-relay"
+import type { signupMutation as signupMutationType } from "./__generated__/signupMutation.graphql"
 
 const singupMutation = graphql`
     mutation signupMutation($username: String!, $password: String!){
@@ -17,7 +18,7 @@ export const Signup = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
-    const [commitMutation] = useMutation(singupMutation)
+    const [commitMutation] = useMutation<signupMutationType>(singupMutation)
 
     const onSubmitSignin = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -27,7 +28,8 @@ export const Signup = () => {
                 username,
                 password
             },
-            onCompleted() {
+            onCompleted(response) {
+                localStorage.setItem('hn-token', response.signup.token)
                 setUsername('')
                 setPassword('')
                 navigate('/')
