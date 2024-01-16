@@ -2,15 +2,18 @@
   "name": "hacker-news",
   "private": true,
   "scripts": {
-    "build": "turbo build",
+    "build": "turbo build --filter=server",
     "dev": "turbo dev",
     "lint": "turbo lint",
+    "start": "turbo start --filter=server",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
-    "prettier": "^3.1.1",
+    "prettier": "^3.1.1"
+  },
+  "dependencies": {
     "turbo": "latest"
   },
   "engines": {

@@ -14,6 +14,7 @@ export const comment = objectType({
             description: 'id of origin post'
         })
         t.nonNull.string('comment')
+        //@ts-ignore
         t.nonNull.dateTime('createdAt')
         t.field('commenter', {
             type: 'user',
