@@ -7,10 +7,12 @@
   "scripts": {
     "dev": "ts-node-dev --transpile-only src/index.ts",
     "test": "vitest",
+    "env":"cp .env.example .env",
     "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/dotenv-safe": "^8.1.5",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/koa": "^2.13.12",
     "@types/koa__cors": "^5.0.0",
@@ -27,6 +29,7 @@
     "@koa/cors": "^5.0.0",
     "@koa/router": "^12.0.1",
     "bcrypt": "^5.1.1",
+    "dotenv-safe": "^8.2.0",
     "graphql": "^16.8.1",
     "graphql-relay": "^0.10.0",
     "graphql-scalars": "^1.22.4",
