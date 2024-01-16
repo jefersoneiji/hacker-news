@@ -22,7 +22,8 @@ export const user = objectType({
             description: 'otp fields from this user',
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             async resolve(root: any, _, ctx) {
-                const user = await ctx.user.findOne({ _id: root.id }).then(res => res!)
+                const user = await ctx.user.findOne({ _id: root.id })
+                if(!user) throw new Error("user does not exist!");
                 return {
                     otp_auth_url: user.otp_auth_url,
                     otp_base32: user.otp_base32,
