@@ -5,6 +5,7 @@
     "build": "turbo build --filter=server",
     "dev": "turbo dev",
     "lint": "turbo lint",
+    "start": "turbo start --filter=server",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
