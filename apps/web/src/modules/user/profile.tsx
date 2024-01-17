@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom"
-import { FormEvent, ReactNode } from 'react'
+import { FormEvent, ReactNode, useEffect, useState } from 'react'
 import { graphql } from "relay-runtime"
 import { useLazyLoadQuery } from "react-relay"
 import dayjs, { extend } from 'dayjs'
@@ -10,6 +10,8 @@ import { Header } from "../../components/header/header"
 import { useShrink } from "../../utils/useShrink"
 import { profileQuery as profileQueryType } from "./__generated__/profileQuery.graphql"
 import { TwoFactorModal } from "./twfa-modal"
+import { jwtVerify } from "jose"
+import { fromGlobalId } from "graphql-relay"
 
 const profileQuery = graphql`
     query profileQuery($userID: ID!) {
@@ -32,6 +34,22 @@ export const Profile = () => {
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
     }
+
+    const [isSeer, setIsSeer] = useState(true)
+
+    useEffect(() => {
+        const token = localStorage.getItem('hn-token')!
+        if (userID) {
+            (async () => {
+                const queryId = fromGlobalId(userID)
+                const rawUserId = await jwtVerify(token, new TextEncoder().encode(import.meta.env.VITE_APP_SECRET))
+                const areEqual = queryId.id !== rawUserId.payload.userId
+                setIsSeer(areEqual)
+            })()
+        }
+
+    }, [])
+    
     return (
         <div className='mx-auto' style={{ width: shrink ? '85%' : '' }}>
             <Header />
@@ -45,42 +63,51 @@ export const Profile = () => {
                 <Row text="karma">
                     <span style={{ color: 'var(--gray)' }}>{data.user.karma}</span>
                 </Row>
-                <TwoFactorModal user={data.user} />
-                <form onSubmit={onSubmit}>
+                {isSeer === true &&
                     <Row text="about">
-                        <textarea
-                            value={data.user.about || ''}
-                            onChange={() => undefined}
-                            style={{ fontSize: 13 }}
-                        />
+                        <TextAreaReadOnly text={data.user.about} />
                     </Row>
-                    <div className="row">
-                        <div className="col-1" />
-                        <div className="col">
-                            <span style={{ fontSize: 13, color: 'var(--gray)' }}>
-                                Only admins see your email below. To share publicly, add to the 'about' box.
-                            </span>
-                        </div>
-                    </div>
+                }
+                {isSeer === false &&
+                    <>
+                        <TwoFactorModal user={data.user} />
+                        <form onSubmit={onSubmit}>
+                            <Row text="about">
+                                <textarea
+                                    value={data.user.about || ''}
+                                    onChange={() => undefined}
+                                    style={{ fontSize: 13 }}
+                                />
+                            </Row>
+                            <div className="row">
+                                <div className="col-1" />
+                                <div className="col">
+                                    <span style={{ fontSize: 13, color: 'var(--gray)' }}>
+                                        Only admins see your email below. To share publicly, add to the 'about' box.
+                                    </span>
+                                </div>
+                            </div>
 
-                    <Row text="e-mail">
-                        <input
-                            type='email'
-                            value={data.user.email || ''}
-                            autoCapitalize="off"
-                            autoCorrect="off"
-                            size={60}
-                            onChange={() => undefined}
-                            style={{ fontSize: 12 }}
-                        />
-                    </Row>
-                    <input
-                        type='submit'
-                        value='update'
-                        className="mt-5"
-                        style={{ fontSize: 13 }}
-                    />
-                </form>
+                            <Row text="e-mail">
+                                <input
+                                    type='email'
+                                    value={data.user.email || ''}
+                                    autoCapitalize="off"
+                                    autoCorrect="off"
+                                    size={60}
+                                    onChange={() => undefined}
+                                    style={{ fontSize: 12 }}
+                                />
+                            </Row>
+                            <input
+                                type='submit'
+                                value='update'
+                                className="mt-5"
+                                style={{ fontSize: 13 }}
+                            />
+                        </form>
+                    </>
+                }
             </div>
         </div >
     )
@@ -96,5 +123,11 @@ export const Row = ({ text, children }: { text: string, children: ReactNode }) =
                 {children}
             </div>
         </div>
+    )
+}
+
+const TextAreaReadOnly = ({ text }: { text?: string | null }) => {
+    return (
+        <p>{text || ''}</p>
     )
 }
