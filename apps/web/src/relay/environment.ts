@@ -13,7 +13,9 @@ const base_url = import.meta.env.VITE_API || 'http://127.0.0.1:4000';
 async function fetchQuery(
     operation: RequestParameters,
     variables: Variables,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _cacheConfig: CacheConfig,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _uploadables?: UploadableMap | null
 ) {
     const token = localStorage.getItem('hn-token');

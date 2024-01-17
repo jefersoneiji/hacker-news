@@ -14,6 +14,7 @@ export const comment = objectType({
             description: 'id of origin post'
         })
         t.nonNull.string('comment')
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
         t.nonNull.dateTime('createdAt')
         t.field('commenter', {
