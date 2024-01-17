@@ -57,6 +57,7 @@ export const PostPage = () => {
             },
             onCompleted() {
                 reset()
+                location.reload()
             }
         })
     }
