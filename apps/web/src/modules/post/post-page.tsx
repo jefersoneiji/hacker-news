@@ -7,7 +7,7 @@ import { useShrink } from "../../utils/useShrink"
 import type { postPageQuery as postPageQueryType } from "./__generated__/postPageQuery.graphql"
 import { PostDisplay } from "./display"
 import { Comment } from "./comment"
-import { useSearchParams } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { jwtVerify } from "jose"
 import { toGlobalId } from "graphql-relay"
@@ -47,6 +47,7 @@ export const PostPage = () => {
 
     const [commitMutation] = useMutation(postPageMutation)
 
+    const navigate = useNavigate()
     const onSubmit: SubmitHandler<TComment> = (e: TComment) => {
 
         commitMutation({
@@ -57,7 +58,7 @@ export const PostPage = () => {
             },
             onCompleted() {
                 reset()
-                location.reload()
+                navigate(0)
             }
         })
     }
