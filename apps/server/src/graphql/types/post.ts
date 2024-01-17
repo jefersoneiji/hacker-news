@@ -11,12 +11,14 @@ export const post = objectType({
             resolve: (root: any) => toGlobalId('post', root.id)
         })
         t.nonNull.string('title')
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
         t.nonNull.dateTime('createdAt')
         t.nonNull.string('link')
         t.nonNull.boolean('votedByLoggedUser')
         t.nonNull.id('postedById', {
             description: 'id of post author',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             resolve(root: any) {
                 return toGlobalId('user', root.postedById)
             }
@@ -32,6 +34,7 @@ export const post = objectType({
         t.nonNull.field('author', {
             type: 'user',
             description: 'post\'s author',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             async resolve(root: any, _, ctx) {
                 const author = await ctx.user.findOne({ _id: root.postedById })
                 return author!
