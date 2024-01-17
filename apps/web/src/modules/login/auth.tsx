@@ -1,8 +1,10 @@
-import { FormEvent, ReactNode, useState } from "react"
+import { ReactNode } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { Signup } from "./signup"
 import { graphql } from "relay-runtime"
 import { useMutation } from "react-relay"
+import { SubmitHandler, useForm } from "react-hook-form"
+
+import { Signup } from "./signup"
 import type { authMutation as authMutationType } from "./__generated__/authMutation.graphql"
 
 const authMutation = graphql`
@@ -18,27 +20,28 @@ const authMutation = graphql`
         }
     }
 `
-export const Auth = () => {
-    const navigate = useNavigate()
 
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+type TForm = {
+    username: string
+    password: string
+}
+
+export const Auth = () => {
+    const { register, reset, handleSubmit, formState: { errors } } = useForm<TForm>()
+    const navigate = useNavigate()
 
     const [commitMutation] = useMutation<authMutationType>(authMutation)
 
-    const onSubmitLogin = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-
+    const onSubmitLogin: SubmitHandler<TForm> = (e: TForm) => {
         commitMutation({
             variables: {
-                username,
-                password
+                username: e.username,
+                password: e.password
             },
             onCompleted(response) {
-                setUsername('')
-                setPassword('')
+                reset()
                 const { login } = response
-                
+
                 if (login.user.otp.otp_enabled) {
                     navigate(`/token?id=${login.user.id}`)
                     return;
@@ -52,7 +55,7 @@ export const Auth = () => {
     return (
         <div className="container-fluid">
             <b>Login</b>
-            <form onSubmit={onSubmitLogin}>
+            <form onSubmit={handleSubmit(onSubmitLogin)}>
                 <Row text="username: ">
                     <input
                         type='text'
@@ -60,21 +63,21 @@ export const Auth = () => {
                         spellCheck={false}
                         autoCapitalize="off"
                         autoFocus={true}
-                        value={username}
                         size={20}
-                        onChange={(e) => setUsername(e.target.value)}
+                        {...register('username', { required: true })}
                         style={{ fontSize: 13 }}
                     />
+                    {errors.username?.type === 'required' && <p className='text-danger' role='alert'>username is required</p>}
                 </Row>
                 <Row text="password:">
                     <input
                         type='password'
                         autoComplete="off"
-                        value={password}
                         size={20}
-                        onChange={(e) => setPassword(e.target.value)}
                         style={{ fontSize: 13 }}
+                        {...register('password', { required: true })}
                     />
+                    {errors.password?.type === 'required' && <p className='text-danger' role='alert'>password is required</p>}
                 </Row>
                 <input
                     data-testid='login'

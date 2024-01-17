@@ -58,7 +58,7 @@ export const login = extendType({
                 const user = await ctx.user.findOne({ username: args.username })
                 if (!user) throw Error("user not found!")
 
-                const valid = compare(args.password, user.password)
+                const valid = await compare(args.password, user.password)
                 if (!valid) throw new Error("invalid credentials!");
 
                 const token = sign({ userId: user._id.toString() }, APP_SECRET)

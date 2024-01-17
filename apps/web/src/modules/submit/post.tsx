@@ -1,11 +1,11 @@
 import { FormEvent, ReactNode, useEffect, useState } from "react"
-import { HeaderNoMenu } from "./header-no-menu"
 import { graphql } from "relay-runtime"
 import { useMutation } from "react-relay"
 import { useNavigate } from "react-router-dom"
-
-import { useShrink } from "../../utils/useShrink"
 import { jwtVerify } from "jose"
+
+import { HeaderNoMenu } from "./header-no-menu"
+import { useShrink } from "../../utils/useShrink"
 import { toGlobalId } from "graphql-relay"
 
 const postMutation = graphql`

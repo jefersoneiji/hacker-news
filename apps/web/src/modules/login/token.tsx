@@ -1,8 +1,8 @@
-import { FormEvent, useState } from "react"
 import { useMutation } from "react-relay"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { graphql } from "relay-runtime"
 import type { tokenMutation as tokenMutationType } from "./__generated__/tokenMutation.graphql"
+import { SubmitHandler, useForm } from "react-hook-form"
 
 const tokenMutation = graphql`
     mutation tokenMutation($userId: ID!, $token: String!){
@@ -11,24 +11,25 @@ const tokenMutation = graphql`
         }
     }
 `
+type TToken = {
+    token: string
+}
 export const Token = () => {
+    const { register, reset, handleSubmit, formState: { errors } } = useForm<TToken>()
     const [searchParams] = useSearchParams()
     const userId = searchParams.get('id')!
 
-    const [userToken, setUserToken] = useState('')
     const [commitMutation] = useMutation<tokenMutationType>(tokenMutation)
     const navigate = useNavigate()
 
-    const onSubmit = (e: FormEvent<HTMLElement>) => {
-        e.preventDefault()
-        
+    const onSubmit: SubmitHandler<TToken> = (e: TToken) => {
         commitMutation({
             variables: {
-                token: userToken,
+                token: e.token,
                 userId
             },
             onCompleted(response) {
-                setUserToken('')
+                reset()
                 localStorage.setItem('hn-token', response.validateOTP.token)
                 navigate('/')
             }
@@ -43,16 +44,16 @@ export const Token = () => {
                 Open the two-step verification app on your mobile device to get your
                 verification code.
             </p>
-            <form onSubmit={onSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <input
                     type="text"
-                    value={userToken}
+                    {...register('token', { required: true })}
                     autoComplete="off"
                     autoCapitalize="off"
                     autoFocus={true}
                     className="mt-3 mb-3"
-                    onChange={(e) => setUserToken(e.target.value)}
                     placeholder="token" />
+                {errors.token?.type === 'required' && <p className='text-danger' role='alert'>token is required</p>}
                 <br />
                 <br />
                 <input

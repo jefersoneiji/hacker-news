@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom"
 import dayjs, { extend } from 'dayjs'
+import { graphql } from "relay-runtime"
+import { useFragment } from "react-relay"
 import relativeTime from 'dayjs/plugin/relativeTime'
 extend(relativeTime)
 
 import triangle from '../../components/home-row/triangle.svg'
-import { graphql } from "relay-runtime"
-import { useFragment } from "react-relay"
 import { commentFragment$key } from "./__generated__/commentFragment.graphql"
 
 const commentFragment = graphql`
@@ -15,6 +15,7 @@ const commentFragment = graphql`
             createdAt
             commenter {
                 username
+                id
             }
         }
     }
@@ -29,7 +30,8 @@ export const Comment = ({ post }: { post: commentFragment$key }) => {
                     key={idx}
                     comment={elem.comment}
                     createdAt={elem.createdAt}
-                    username={elem.commenter?.username || ''} />
+                    username={elem.commenter?.username || ''}
+                    id={elem.commenter?.id || ''} />
             )}
         </>
     )
@@ -38,9 +40,10 @@ export const Comment = ({ post }: { post: commentFragment$key }) => {
 type TComment = {
     comment: string,
     createdAt: string
-    username: string
+    username: string,
+    id: string
 }
-const Row = ({ comment, createdAt, username }:TComment ) => {
+const Row = ({ comment, createdAt, username, id }: TComment) => {
     const voted = false
 
     return (
@@ -59,7 +62,7 @@ const Row = ({ comment, createdAt, username }:TComment ) => {
             </div>
             <div className="d-flex flex-column">
                 <div className='d-flex flex-row align-items-end'>
-                    <Link to='/' className='link ms-1'>{username}</Link>
+                    <Link to={`/user?id=${id}`} className='link ms-1'>{username}</Link>
                     <Link to='/' className='link ms-1'>{dayjs(createdAt).fromNow()}</Link>
 
                     <Link to='/' className='link ms-1'>| next [–]</Link>
