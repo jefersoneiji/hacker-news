@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom"
 import { Row } from "./auth"
-import { FormEvent, useState } from "react"
 import { graphql } from "relay-runtime"
 import { useMutation } from "react-relay"
 import type { signupMutation as signupMutationType } from "./__generated__/signupMutation.graphql"

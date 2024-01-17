@@ -1,10 +1,11 @@
-import { ReactNode, useState } from "react"
+import { ReactNode } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { Signup } from "./signup"
 import { graphql } from "relay-runtime"
 import { useMutation } from "react-relay"
-import type { authMutation as authMutationType } from "./__generated__/authMutation.graphql"
 import { SubmitHandler, useForm } from "react-hook-form"
+
+import { Signup } from "./signup"
+import type { authMutation as authMutationType } from "./__generated__/authMutation.graphql"
 
 const authMutation = graphql`
     mutation authMutation($username: String!, $password: String!){
