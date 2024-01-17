@@ -32,7 +32,7 @@ export const Post = () => {
         const token = localStorage.getItem('hn-token')!
         console.log('vite_app_secret is: ',import.meta.env.VITE_APP_SECRET)
         console.log('token is: ',token)
-        jwtVerify(token, new TextEncoder().encode(import.meta.env.VITE_APP_SECRET)).then(res => setUserId(toGlobalId('post', res.payload.userId as string)))
+        // jwtVerify(token, new TextEncoder().encode(import.meta.env.VITE_APP_SECRET)).then(res => setUserId(toGlobalId('post', res.payload.userId as string)))
     }, [])
     
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
