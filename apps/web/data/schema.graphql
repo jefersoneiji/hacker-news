@@ -78,6 +78,9 @@ type otp {
 
 """post type"""
 type post {
+  """post's author"""
+  author: user!
+
   """list of comments for a post"""
   comments: [comment!]!
   createdAt: DateTime!
@@ -85,6 +88,8 @@ type post {
   """the id of a post"""
   id: ID!
   link: String!
+
+  """id of post author"""
   postedById: ID!
   title: String!
   votedByLoggedUser: Boolean!

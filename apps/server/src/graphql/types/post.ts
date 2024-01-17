@@ -15,13 +15,26 @@ export const post = objectType({
         t.nonNull.dateTime('createdAt')
         t.nonNull.string('link')
         t.nonNull.boolean('votedByLoggedUser')
-        t.nonNull.id('postedById')
+        t.nonNull.id('postedById', {
+            description: 'id of post author',
+            resolve(root: any) {
+                return toGlobalId('user', root.postedById)
+            }
+        })
         t.nonNull.list.nonNull.field('comments', {
             type: 'comment',
             description: 'list of comments for a post',
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             resolve(root: any, _args, ctx) {
                 return ctx.comment.find({ postId: root.id })
+            }
+        })
+        t.nonNull.field('author', {
+            type: 'user',
+            description: 'post\'s author',
+            async resolve(root: any, _, ctx) {
+                const author = await ctx.user.findOne({ _id: root.postedById })
+                return author!
             }
         })
     },

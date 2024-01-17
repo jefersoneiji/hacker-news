@@ -1,10 +1,12 @@
-import { FormEvent, ReactNode, useState } from "react"
+import { FormEvent, ReactNode, useEffect, useState } from "react"
 import { HeaderNoMenu } from "./header-no-menu"
 import { graphql } from "relay-runtime"
 import { useMutation } from "react-relay"
 import { useNavigate } from "react-router-dom"
 
 import { useShrink } from "../../utils/useShrink"
+import { jwtVerify } from "jose"
+import { toGlobalId } from "graphql-relay"
 
 const postMutation = graphql`
     mutation postMutation($title: String!, $link: String!, $userId: ID!){
@@ -25,10 +27,15 @@ export const Post = () => {
     const [commitMutation] = useMutation(postMutation)
     const navigate = useNavigate()
 
-    const userId = "dXNlcjo2NTllYzI2YmQ3ODI3ODc0ZWU4MmNmODA="
+    const [userId, setUserId] = useState('')
+    useEffect(() => {
+        const token = localStorage.getItem('hn-token') || ''
+        jwtVerify(token, new TextEncoder().encode(import.meta.env.VITE_APP_SECRET)).then(res => setUserId(toGlobalId('post', res.payload.userId as string)))
+    }, [])
+    
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        
+
         commitMutation({
             variables: { title, link, userId },
             onCompleted() {

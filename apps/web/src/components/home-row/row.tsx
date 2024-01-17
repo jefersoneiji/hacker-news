@@ -16,6 +16,10 @@ const homeRowFragment = graphql`
         link
         votedByLoggedUser
         id
+        author {
+            username
+            id
+        }
         comments {
             id
         }
@@ -28,8 +32,7 @@ type TRow = {
 
 export const HomeRow = ({ post, idx }: TRow) => {
     const data = useFragment(homeRowFragment, post)
-    const userId = "dXNlcjo2NTllYmJjYzdjNGUyNzZjYmFhZDc0NmY="
-    
+    const { username, id } = data.author
     const voted = data.votedByLoggedUser
     const link = new URL(data.link)
     return (
@@ -47,7 +50,7 @@ export const HomeRow = ({ post, idx }: TRow) => {
                     <a href='/' className='link ms-2' style={{ fontSize: 13 }}>({link.hostname})</a>
                 </div>
                 <div className='d-flex flex-row' style={{ fontSize: 12, color: 'var(--gray)' }}>
-                    <span>50 points by <Link to={`/user?id=${userId}`} className='link'>jefersoneiji</Link></span>
+                    <span>50 points by <Link to={`/user?id=${id}`} className='link'>{username}</Link></span>
                     <Link to='/' className='link ms-1'>{dayjs(data.createdAt).fromNow()}</Link>
                     <Link to='/' className='link ms-1'>| hide |</Link>
                     <Link to={`/item?id=${data.id}`} className='link ms-1'>{data.comments.length} comments</Link>
