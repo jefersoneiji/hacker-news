@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import dayjs, { extend } from 'dayjs'
 import { graphql } from "relay-runtime"
 import { useFragment, useMutation } from "react-relay"
@@ -66,7 +66,12 @@ const commentMutation = graphql`
 const Row = ({ comment, createdAt, username, id, votedByLoggedUser, commentId }: TComment) => {
     const [commitMutation] = useMutation<commentMutationType>(commentMutation)
 
+    const navigate = useNavigate()
     const voteComment = () => {
+        const token = localStorage.getItem('hn-token')
+        if (!token) {
+            return navigate('/login')
+        }
         commitMutation({
             variables: { commentId }
         })
