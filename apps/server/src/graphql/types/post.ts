@@ -1,6 +1,6 @@
 import { fromGlobalId, toGlobalId } from "graphql-relay";
 import { extendType, idArg, nonNull, objectType, stringArg } from "nexus";
-import { user, userDocument } from "../../modules/user/userModel";
+import { userDocument } from "../../modules/user/userModel";
 
 export const post = objectType({
     name: 'post',
@@ -57,7 +57,7 @@ export const post = objectType({
                 if (!post) throw new Error("post doesn't exist");
 
                 const users = await ctx.user.aggregate([{ $match: { _id: { $in: post.voters } } }])
-                return users.map((elem:userDocument) => ({ ...elem, id: elem._id.toString() }))
+                return users.map((elem: userDocument) => ({ ...elem, id: elem._id.toString() }))
             }
         })
     },
@@ -127,8 +127,8 @@ export const vote = extendType({
             args: { postId: nonNull(idArg()) },
             async resolve(_, args, ctx) {
                 const id = fromGlobalId(args.postId).id
-                if(!ctx.userId)throw new Error("user must be logged");
-                
+                if (!ctx.userId) throw new Error("user must be logged");
+
                 const post = await ctx.post.findOneAndUpdate({ _id: id }, { $addToSet: { voters: ctx.userId } })
                 if (!post) throw new Error("post doesn't exist");
                 return post
