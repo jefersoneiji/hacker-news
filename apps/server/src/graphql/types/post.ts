@@ -15,7 +15,14 @@ export const post = objectType({
         //@ts-ignore
         t.nonNull.dateTime('createdAt')
         t.nonNull.string('link')
-        t.nonNull.boolean('votedByLoggedUser')
+        t.nonNull.boolean('votedByLoggedUser', {
+            description: 'check if post was voted by logged user',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            async resolve(root: any, _args, ctx) {
+                if (!ctx.userId) return false;
+                return !!await ctx.post.findOne({ _id: root.id, voters: ctx.userId })
+            }
+        })
         t.nonNull.id('postedById', {
             description: 'id of post author',
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -49,7 +56,7 @@ export const post = objectType({
                 if (!post) throw new Error("post doesn't exist");
 
                 const users = await ctx.user.aggregate([{ $match: { _id: { $in: post.voters } } }])
-                return users.map(elem => ({...elem, id: elem._id.toString()}))
+                return users.map(elem => ({ ...elem, id: elem._id.toString() }))
             }
         })
     },
