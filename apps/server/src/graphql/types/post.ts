@@ -127,6 +127,8 @@ export const vote = extendType({
             args: { postId: nonNull(idArg()) },
             async resolve(_, args, ctx) {
                 const id = fromGlobalId(args.postId).id
+                if(!ctx.userId)throw new Error("user must be logged");
+                
                 const post = await ctx.post.findOneAndUpdate({ _id: id }, { $addToSet: { voters: ctx.userId } })
                 if (!post) throw new Error("post doesn't exist");
                 return post
