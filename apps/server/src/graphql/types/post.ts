@@ -1,5 +1,6 @@
 import { fromGlobalId, toGlobalId } from "graphql-relay";
 import { extendType, idArg, nonNull, objectType, stringArg } from "nexus";
+import { user } from "../../modules/user/userModel";
 
 export const post = objectType({
     name: 'post',
@@ -56,7 +57,7 @@ export const post = objectType({
                 if (!post) throw new Error("post doesn't exist");
 
                 const users = await ctx.user.aggregate([{ $match: { _id: { $in: post.voters } } }])
-                return users.map(elem => ({ ...elem, id: elem._id.toString() }))
+                return users.map(elem => ({ ...elem, id: elem._id.toString() })) as user[]
             }
         })
     },
