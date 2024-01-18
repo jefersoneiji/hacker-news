@@ -1,81 +1,77 @@
-# Turborepo starter
+<div align="center">
+  <img  alt="woovi-logo" width="150" height="150" src="./y18.svg">
+</div>
 
-This is an official starter Turborepo.
+<h1 align="center">
+   Hacker News Clone
+</h1>
 
-## Using this example
+<h4 align="center">
+ Hakcer News Clone for Woovi Challenge
+</h4>
 
-Run the following command:
+## Summary 
 
-```sh
-npx create-turbo@latest
-```
+Hacker news clone made in react (vitejs) combined with graphql. Its possible to vote posts, comments interactively. Also, it's possible to authenticate use 2FA (Two factor authentication)
 
-## What's inside?
+## Prerequisites
 
-This Turborepo includes the following packages/apps:
+For this project to run, make sure these software are installed:
 
-### Apps and Packages
+- yarn (for compatibility reasons yarn classic is recommended)
+    ```cmd
+   https://classic.yarnpkg.com/lang/en/docs/install/
+   ```
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+- nodejs
+    ```cmd
+   https://nodejs.org/en/download/current
+   ```
+- local instance of mongodb running on port 27017
+    ```cmd
+   https://hub.docker.com/_/mongo
+   ```
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+## Installing
 
-### Utilities
+To run locally:
+1. Clone this repo
+   ```cmd
+   git@github.com:jefersoneiji/hacker-news.git
+   ```
 
-This Turborepo has some additional tools already setup for you:
+2. Install dependencies in your machine
+   ```cmd
+   yarn install
+   ```
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+3. Start the front and back-end
+    ```cmd
+    yarn dev
+    ```
 
-### Build
+## Accessing
 
-To build all apps and packages, run the following command:
+### Front-end
+- open address
+   ```cmd
+   http://localhost:5173
+   ```
+### Back-end
+- use graphiql
+   ```cmd
+   http://localhost:4000/graphql
+   ```
 
-```
-cd my-turborepo
-pnpm build
-```
+## Architecture Challenge
 
-### Develop
+- Available at: 
 
-To develop all apps and packages, run the following command:
+    ```cmd
+    https://github.com/jefersoneiji/pix-credit-architecture
+    ```
+## License
 
-```
-cd my-turborepo
-pnpm dev
-```
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+Made by Jeferson Eiji ➡️ [Get in touch!](https://www.linkedin.com/in/jeferson-eiji/)
