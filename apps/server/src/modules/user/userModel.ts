@@ -29,6 +29,6 @@ type OTP = {
     otp_auth_url: string,
     otp_enabled: boolean
 }
-type userDocument = user & Document & OTP
+export type userDocument = user & Document & OTP
 
 export const userModel = mongoose.model<userDocument>('user', userSchema)
