@@ -1,5 +1,6 @@
 import { fromGlobalId, toGlobalId } from "graphql-relay";
 import { extendType, idArg, nonNull, objectType, stringArg } from "nexus";
+import { userDocument } from "../../modules/user/userModel";
 
 export const post = objectType({
     name: 'post',
@@ -15,7 +16,14 @@ export const post = objectType({
         //@ts-ignore
         t.nonNull.dateTime('createdAt')
         t.nonNull.string('link')
-        t.nonNull.boolean('votedByLoggedUser')
+        t.nonNull.boolean('votedByLoggedUser', {
+            description: 'check if post was voted by logged user',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            async resolve(root: any, _args, ctx) {
+                if (!ctx.userId) return false;
+                return !!await ctx.post.findOne({ _id: root.id, voters: ctx.userId })
+            }
+        })
         t.nonNull.id('postedById', {
             description: 'id of post author',
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -38,6 +46,18 @@ export const post = objectType({
             async resolve(root: any, _, ctx) {
                 const author = await ctx.user.findOne({ _id: root.postedById })
                 return author!
+            }
+        })
+        t.nonNull.list.nonNull.field('voters', {
+            type: 'user',
+            description: 'users that voted this post',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            async resolve(root: any, _, ctx) {
+                const post = await ctx.post.findOne({ _id: root.id })
+                if (!post) throw new Error("post doesn't exist");
+
+                const users = await ctx.user.aggregate([{ $match: { _id: { $in: post.voters } } }])
+                return users.map((elem: userDocument) => ({ ...elem, id: elem._id.toString() }))
             }
         })
     },
@@ -92,6 +112,25 @@ export const onePost = extendType({
                 if (!post) {
                     throw new Error("post not found");
                 }
+                return post
+            }
+        })
+    }
+})
+
+export const vote = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.nonNull.field('vote', {
+            type: 'post',
+            description: 'votes a post',
+            args: { postId: nonNull(idArg()) },
+            async resolve(_, args, ctx) {
+                const id = fromGlobalId(args.postId).id
+                if (!ctx.userId) throw new Error("user must be logged");
+
+                const post = await ctx.post.findOneAndUpdate({ _id: id }, { $addToSet: { voters: ctx.userId } })
+                if (!post) throw new Error("post doesn't exist");
                 return post
             }
         })

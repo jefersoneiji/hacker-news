@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-interface user {
+export interface user {
     about?: string | null; // String
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     createdAt: any; // DateTime!
@@ -29,6 +29,6 @@ type OTP = {
     otp_auth_url: string,
     otp_enabled: boolean
 }
-type userDocument = user & Document & OTP
+export type userDocument = user & Document & OTP
 
 export const userModel = mongoose.model<userDocument>('user', userSchema)
