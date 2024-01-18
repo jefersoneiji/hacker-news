@@ -34,6 +34,9 @@ type Mutation {
 
   """votes a post"""
   vote(postId: ID!): post!
+
+  """votes a comment"""
+  voteComment(commentId: ID!): comment!
 }
 
 type Query {
@@ -71,6 +74,9 @@ type comment {
 
   """id of origin post"""
   postId: ID!
+
+  """check if comment was voted by logged user"""
+  votedByLoggedUser: Boolean!
 }
 
 type otp {
