@@ -18,20 +18,12 @@ Hacker news clone made in react (vitejs) combined with graphql. Its possible to 
 
 For this project to run, make sure these software are installed:
 
-- yarn (for compatibility reasons yarn classic is recommended)
-    ```cmd
-   https://classic.yarnpkg.com/lang/en/docs/install/
-   ```
+- [yarn](https://classic.yarnpkg.com/lang/en/docs/install/) (for compatibility reasons yarn classic is recommended) 
 
-- nodejs
-    ```cmd
-   https://nodejs.org/en/download/current
-   ```
-- local instance of mongodb running on port 27017
-    ```cmd
-   https://hub.docker.com/_/mongo
-   ```
-
+- [nodejs](https://nodejs.org/en/download/current)
+    
+- [local instance of mongodb](https://hub.docker.com/_/mongo) running on port 27017
+    
 ## Installing
 
 To run locally:
@@ -53,23 +45,15 @@ To run locally:
 ## Accessing
 
 ### Front-end
-- open address
-   ```cmd
-   http://localhost:5173
-   ```
+- open address [http://localhost:5173](http://localhost:5173)
+
 ### Back-end
-- use graphiql
-   ```cmd
-   http://localhost:4000/graphql
-   ```
+- use graphiql [http://localhost:4000/graphql](http://localhost:4000/graphql)
 
 ## Architecture Challenge
 
-- Available at: 
+- Available at: [pix architecture](https://github.com/jefersoneiji/pix-credit-architecture)
 
-    ```cmd
-    https://github.com/jefersoneiji/pix-credit-architecture
-    ```
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
