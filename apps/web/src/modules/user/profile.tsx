@@ -48,7 +48,7 @@ export const Profile = () => {
             })()
         }
 
-    }, [])
+    }, [userID])
     
     return (
         <div className='mx-auto' style={{ width: shrink ? '85%' : '' }}>

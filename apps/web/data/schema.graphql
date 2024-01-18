@@ -95,6 +95,8 @@ type post {
   """id of post author"""
   postedById: ID!
   title: String!
+
+  """check if post was voted by logged user"""
   votedByLoggedUser: Boolean!
 
   """users that voted this post"""
