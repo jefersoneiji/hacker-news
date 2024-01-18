@@ -37,8 +37,10 @@ export const PostPage = () => {
 
     const [userId, setUserId] = useState('')
     useEffect(() => {
-        const token = localStorage.getItem('hn-token')!
-        jwtVerify(token, new TextEncoder().encode(import.meta.env.VITE_APP_SECRET)).then(res => setUserId(toGlobalId('post', res.payload.userId as string)))
+        const token = localStorage.getItem('hn-token')
+        if (token) {
+            jwtVerify(token, new TextEncoder().encode(import.meta.env.VITE_APP_SECRET)).then(res => setUserId(toGlobalId('post', res.payload.userId as string)))
+        }
     }, [])
 
     const [searchParams] = useSearchParams()
