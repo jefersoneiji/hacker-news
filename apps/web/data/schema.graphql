@@ -31,6 +31,9 @@ type Mutation {
 
   """validates token from user during login"""
   validateOTP(token: String!, userId: ID!): auth!
+
+  """votes a post"""
+  vote(postId: ID!): post!
 }
 
 type Query {
@@ -93,6 +96,9 @@ type post {
   postedById: ID!
   title: String!
   votedByLoggedUser: Boolean!
+
+  """users that voted this post"""
+  voters: [user!]!
 }
 
 """platform user"""

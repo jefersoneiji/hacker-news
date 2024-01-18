@@ -23,6 +23,9 @@ const homeRowFragment = graphql`
         comments {
             id
         }
+        voters {
+            username
+        }
     }
 `
 type TRow = {
@@ -50,7 +53,7 @@ export const HomeRow = ({ post, idx }: TRow) => {
                     <a href='/' className='link ms-2' style={{ fontSize: 13 }}>({link.hostname})</a>
                 </div>
                 <div className='d-flex flex-row' style={{ fontSize: 12, color: 'var(--gray)' }}>
-                    <span>50 points by <Link to={`/user?id=${id}`} className='link'>{username}</Link></span>
+                    <span>{data.voters.length} points by <Link to={`/user?id=${id}`} className='link'>{username}</Link></span>
                     <Link to='/' className='link ms-1'>{dayjs(data.createdAt).fromNow()}</Link>
                     <Link to='/' className='link ms-1'>| hide |</Link>
                     <Link to={`/item?id=${data.id}`} className='link ms-1'>{data.comments.length} comments</Link>

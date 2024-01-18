@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-interface user {
+export interface user {
     about?: string | null; // String
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     createdAt: any; // DateTime!

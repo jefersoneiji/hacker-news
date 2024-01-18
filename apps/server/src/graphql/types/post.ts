@@ -40,6 +40,18 @@ export const post = objectType({
                 return author!
             }
         })
+        t.nonNull.list.nonNull.field('voters', {
+            type: 'user',
+            description: 'users that voted this post',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            async resolve(root: any, _, ctx) {
+                const post = await ctx.post.findOne({ _id: root.id })
+                if (!post) throw new Error("post doesn't exist");
+
+                const users = await ctx.user.aggregate([{ $match: { _id: { $in: post.voters } } }])
+                return users.map(elem => ({...elem, id: elem._id.toString()}))
+            }
+        })
     },
 })
 
@@ -92,6 +104,23 @@ export const onePost = extendType({
                 if (!post) {
                     throw new Error("post not found");
                 }
+                return post
+            }
+        })
+    }
+})
+
+export const vote = extendType({
+    type: 'Mutation',
+    definition(t) {
+        t.nonNull.field('vote', {
+            type: 'post',
+            description: 'votes a post',
+            args: { postId: nonNull(idArg()) },
+            async resolve(_, args, ctx) {
+                const id = fromGlobalId(args.postId).id
+                const post = await ctx.post.findOneAndUpdate({ _id: id }, { $addToSet: { voters: ctx.userId } })
+                if (!post) throw new Error("post doesn't exist");
                 return post
             }
         })
