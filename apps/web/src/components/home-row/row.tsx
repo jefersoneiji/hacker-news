@@ -42,6 +42,10 @@ const rowMutation = graphql`
             voters {
                 username
             }
+            author {
+                id
+                karma
+            }
         }
     }
 `

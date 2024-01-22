@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
+import { graphql } from 'relay-runtime'
+import { useLazyLoadQuery } from 'react-relay'
 
 import { useShrink } from "../../utils/useShrink"
 import logo from './y18.svg'
-import { graphql } from 'relay-runtime'
-import { useLazyLoadQuery } from 'react-relay'
 import type { headerQuery as headerQueryType } from './__generated__/headerQuery.graphql'
 
 export const Header = () => {
@@ -30,17 +30,17 @@ export const Header = () => {
                     </button>
                     <div className='collapse navbar-collapse' id="navbarSupportedContent">
                         <ul className='navbar-nav align-items-sm-start align-items-lg-center text-dark' style={{ padding: '2px' }}>
-                            <NavItem text='new' href='/news' />
+                            <NavItem text='new' href='/' />
                             <VericalRuler />
-                            <NavItem text='past' href='/past' />
+                            <NavItem text='past' href='/' />
                             <VericalRuler />
-                            <NavItem text='comments' href='/comments' />
+                            <NavItem text='comments' href='/' />
                             <VericalRuler />
-                            <NavItem text='ask' href='/ask' />
+                            <NavItem text='ask' href='/' />
                             <VericalRuler />
-                            <NavItem text='show' href='/show' />
+                            <NavItem text='show' href='/' />
                             <VericalRuler />
-                            <NavItem text='jobs' href='/jobs' />
+                            <NavItem text='jobs' href='https://news.ycombinator.com/jobs' />
                             <VericalRuler />
                             <NavItem text='submit' href={isLogged ? '/submit' : '/login'} />
                         </ul>

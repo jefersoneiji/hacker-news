@@ -16,7 +16,27 @@ export const user = objectType({
         t.nonNull.dateTime('createdAt')
         t.string('email')
         t.string('about')
-        t.nonNull.int('karma')
+        t.nonNull.int('karma', {
+            description: 'number of voted posts',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            async resolve(root: any, _args, ctx) {
+                const result = await ctx.user.aggregate([
+                    {
+                        $lookup: {
+                            from: "posts",
+                            localField: '_id',
+                            foreignField: 'voters',
+                            as: 'karma_posts'
+                        }
+                    }
+
+                ])
+                return result
+                    .find(elem => elem.username === root.username)
+                    .karma_posts
+                    .length
+            }
+        })
         t.nonNull.string('password')
         t.nonNull.field('otp', {
             type: 'otp',

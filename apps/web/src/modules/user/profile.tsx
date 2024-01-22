@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom"
 import { FormEvent, ReactNode, useEffect, useState } from 'react'
 import { graphql } from "relay-runtime"
 import { useLazyLoadQuery } from "react-relay"
+import { jwtVerify } from "jose"
 import dayjs, { extend } from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 extend(relativeTime)
@@ -10,7 +11,6 @@ import { Header } from "../../components/header/header"
 import { useShrink } from "../../utils/useShrink"
 import { profileQuery as profileQueryType } from "./__generated__/profileQuery.graphql"
 import { TwoFactorModal } from "./twfa-modal"
-import { jwtVerify } from "jose"
 import { fromGlobalId } from "graphql-relay"
 
 const profileQuery = graphql`
@@ -38,8 +38,8 @@ export const Profile = () => {
     const [isSeer, setIsSeer] = useState(true)
 
     useEffect(() => {
-        const token = localStorage.getItem('hn-token')!
-        if (userID) {
+        const token = localStorage.getItem('hn-token')
+        if (userID && token) {
             (async () => {
                 const queryId = fromGlobalId(userID)
                 const rawUserId = await jwtVerify(token, new TextEncoder().encode(import.meta.env.VITE_APP_SECRET))
