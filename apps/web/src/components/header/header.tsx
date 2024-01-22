@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
+import { graphql } from 'relay-runtime'
+import { useLazyLoadQuery } from 'react-relay'
 
 import { useShrink } from "../../utils/useShrink"
 import logo from './y18.svg'
-import { graphql } from 'relay-runtime'
-import { useLazyLoadQuery } from 'react-relay'
 import type { headerQuery as headerQueryType } from './__generated__/headerQuery.graphql'
 
 export const Header = () => {
