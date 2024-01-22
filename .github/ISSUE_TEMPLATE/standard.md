@@ -1,7 +1,7 @@
 ---
 name: Standard
 about: Helps keep tracking of day to day implemented features.
-title: "[scope (front or back-end): summary title "
+title: "[scope (front or back-end)]: summary title "
 labels: ''
 assignees: ''
 
