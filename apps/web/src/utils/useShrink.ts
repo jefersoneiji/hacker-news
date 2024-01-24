@@ -13,6 +13,7 @@ export const useShrink = () => {
         function handleResize() {
             setShrink(maxHeightFn(getWindowDimensions(window)));
         }
+        handleResize()
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
