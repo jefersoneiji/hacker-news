@@ -12,7 +12,7 @@ test('should login user sucessfully', async () => {
     `
 
     const args = { username: "superjeferson", password: '123456' }
-    const result = await request<NexusGenFieldTypes['Mutation']>('http://localhost:4000/graphql', mutation, args)
+    const result = await request<NexusGenFieldTypes['Mutation']>(process.env.API_URL!, mutation, args)
 
     expect(result.login.token)
 })

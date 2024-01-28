@@ -22,7 +22,7 @@ test('should create a post', async () => {
         userId: "dXNlcjo2NTllYmJjYzdjNGUyNzZjYmFhZDc0NmY="
     }
 
-    const result = await request<{ post: NexusGenFieldTypes['post'] }>('http://localhost:4000/graphql', mutation, args)
+    const result = await request<{ post: NexusGenFieldTypes['post'] }>(process.env.API_URL!, mutation, args)
 
     expect(result.post.title).toBe(args.title)
     expect(result.post.link).toBe(args.link)

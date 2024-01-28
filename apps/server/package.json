@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev --transpile-only src/index.ts",
-    "test": "vitest",
+    "dev:test": "dotenv -e .env.test -- ts-node-dev --transpile-only src/index.ts",
+    "test": "dotenv -e .env.test -- vitest",
     "env": "cp .env.example .env",
     "build": "yarn tsc",
     "start": "node dist/src/index.js",
@@ -31,6 +32,7 @@
     "@koa/cors": "^5.0.0",
     "@koa/router": "^12.0.1",
     "bcrypt": "^5.1.1",
+    "dotenv-cli": "^7.3.0",
     "dotenv-safe": "^8.2.0",
     "graphql": "^16.8.1",
     "graphql-relay": "^0.10.0",
