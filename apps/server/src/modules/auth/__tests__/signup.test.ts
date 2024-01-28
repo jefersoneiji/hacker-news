@@ -11,7 +11,7 @@ test.skip('should return created user', async () => {
         }
     `
     const args = { username: "johndoe", password: "bestsweever" }
-    const result = await request<NexusGenFieldTypes['Mutation']>('http://localhost:4000/graphql', mutation, args)
+    const result = await request<NexusGenFieldTypes['Mutation']>(process.env.API_URL!, mutation, args)
 
     expect(result.signup.token).toBeTypeOf('string')
 })

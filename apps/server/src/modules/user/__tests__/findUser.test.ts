@@ -10,7 +10,7 @@ test.skip('should thrown error when user is not found', async () => {
             }
         }
     `
-    const result = request<NexusGenFieldTypes['Query']>('http://localhost:4000/graphql', query)
+    const result = request<NexusGenFieldTypes['Query']>(process.env.API_URL!, query)
 
     await expect(result).rejects.toThrowError('user not found')
 })
@@ -27,7 +27,7 @@ test.skip('should return one user from its id', async () => {
         }
     `
     const args = { userID: "dXNlcjo2NTlkYThmNjRlMDU4MGY4NWMwZDYxZTQ=" }
-    const result = await request<{ user: NexusGenFieldTypes['user'] }>('http://localhost:4000/graphql', query, { userID: args.userID })
+    const result = await request<{ user: NexusGenFieldTypes['user'] }>(process.env.API_URL!, query, { userID: args.userID })
 
     expect(result.user.username).toBe('johndoe')
     expect(result.user.id).toBe(args.userID)
@@ -44,7 +44,7 @@ test('should return list of users', async () => {
             }
         }
     `
-    const result = await request<NexusGenFieldTypes['Query']>('http://localhost:4000/graphql', query)
+    const result = await request<NexusGenFieldTypes['Query']>(process.env.API_URL!, query)
 
     expect(result.users).not.toBeNull()
 })

@@ -16,7 +16,7 @@ test.skip('should find post by its id', async () => {
     `
 
     const result = await request<{findPost: NexusGenFieldTypes['post']}>(
-        'http://localhost:4000/graphql',
+        process.env.API_URL!,
         query,
         { postID: "cG9zdDo2NTljOTNjNjg0MjEzODFjZjQyODc1ZWM=" }
     )

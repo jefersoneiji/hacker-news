@@ -12,7 +12,7 @@ test('should returns several posts', async () => {
         }
     `
 
-    const result = await request<NexusGenFieldTypes['Query']>('http://localhost:4000/graphql', query)
+    const result = await request<NexusGenFieldTypes['Query']>(process.env.API_URL!, query)
 
     expect(result.posts).length.greaterThanOrEqual(0)
 })

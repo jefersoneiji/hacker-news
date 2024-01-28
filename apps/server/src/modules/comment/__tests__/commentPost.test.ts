@@ -21,7 +21,7 @@ test('should comment a post', async () => {
         userId: "dXNlcjo2NTllYmJjYzdjNGUyNzZjYmFhZDc0NmY="
     }
 
-    const result = await request<{comment: NexusGenFieldTypes['comment']}>('http://localhost:4000/graphql', mutation, args)
+    const result = await request<{comment: NexusGenFieldTypes['comment']}>(process.env.API_URL!, mutation, args)
 
     expect(result.comment.comment).toEqual(args.comment)
     expect(result.comment.createdAt).not.toBeNull()
