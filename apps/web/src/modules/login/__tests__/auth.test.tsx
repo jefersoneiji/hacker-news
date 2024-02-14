@@ -15,19 +15,21 @@ const routes = [
     { path: '/token', element: <Token />, errorElement: <ErrorPage /> },
 ]
 
-test.skip('should navigate to token after login', async () => {
+test('should navigate to token after login', async () => {
     const environment = createMockEnvironment()
     const router = createMemoryRouter(routes, {
         initialEntries: ['/', '/login'],
         initialIndex: 1
     })
-    render(
+    const {container } = render(
         <RelayEnvironmentProvider environment={environment}>
             <RouterProvider router={router} />
         </RelayEnvironmentProvider>
     )
     const user = userEvent.setup()
 
+    await user.type(container.querySelector('input[name="username"')!, 'johndoe')
+    await user.type(container.querySelector('input[name="password"')!, '123456')
     await user.click(screen.getByTestId('login'))
     act(() =>
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
