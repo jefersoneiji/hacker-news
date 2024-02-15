@@ -8,6 +8,10 @@ import { RelayEnvironmentProvider } from "react-relay"
 import { Post } from "../post"
 import { ErrorPage } from "../../../error-page"
 
+beforeAll(() => {
+    localStorage.setItem('hn-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWEwNTUyZTcyMjVmMTkzNDBmNTUzOTciLCJpYXQiOjE3MDc5NTI4ODN9.7SQRJp35DhvAI3nZOQF2ZynX7ontyVQAdvC04GAxECo')
+})
+
 const Mock = () => <div />
 const routes = [
     { path: '/', element: <Mock />, errorElement: <ErrorPage /> },

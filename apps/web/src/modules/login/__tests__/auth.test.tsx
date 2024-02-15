@@ -21,13 +21,15 @@ test('should navigate to token after login', async () => {
         initialEntries: ['/', '/login'],
         initialIndex: 1
     })
-    render(
+    const {container } = render(
         <RelayEnvironmentProvider environment={environment}>
             <RouterProvider router={router} />
         </RelayEnvironmentProvider>
     )
     const user = userEvent.setup()
 
+    await user.type(container.querySelector('input[name="username"')!, 'johndoe')
+    await user.type(container.querySelector('input[name="password"')!, '123456')
     await user.click(screen.getByTestId('login'))
     act(() =>
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -52,6 +54,7 @@ test('should navigate to home after token authentication', async () => {
     )
     const user = userEvent.setup()
 
+    await user.type(screen.getByPlaceholderText('token'),"255adf54654")
     await user.click(screen.getByTestId('authenticate'))
     act(() =>
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
