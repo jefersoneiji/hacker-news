@@ -30,7 +30,11 @@ export const Post = () => {
     const [userId, setUserId] = useState('')
     useEffect(() => {
         const token = localStorage.getItem('hn-token')!
-        jwtVerify(token, new TextEncoder().encode(import.meta.env.VITE_APP_SECRET)).then(res => setUserId(toGlobalId('post', res.payload.userId as string)))
+        jwtVerify(token, new TextEncoder().encode(import.meta.env.VITE_APP_SECRET))
+        .then(res => {
+            setUserId(toGlobalId('post', res.payload.userId as string))
+        })
+        .catch(err => err)
     }, [])
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
